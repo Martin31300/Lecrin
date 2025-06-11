@@ -1,8 +1,14 @@
 import artworkRepository from "./artworkRepository";
+import type { RequestHandler } from "express";
 
-async function getAll(req, res) {
-    const result = await artworkRepository.selectAll();
-    res.json(result);
+const getAll: RequestHandler = async (req, res, next) => {
+
+    try {
+        const result = await artworkRepository.selectAll();
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
 }
 
 export default { getAll }
