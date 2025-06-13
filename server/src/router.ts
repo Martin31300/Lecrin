@@ -12,7 +12,6 @@ const router = express.Router();
 // router.get("/api/items/:id", itemActions.read);
 // router.post("/api/items", itemActions.add);
 
-
 // --- ARTWORK --- //
 import artworkActions from "./modules/artwork/artworkActions";
 router.get("/api/artworks", artworkActions.browse);
@@ -27,7 +26,7 @@ router.get("/api/users", userActions.browse);
 import artistActions from "./modules/artist/artistActions";
 router.get("/api/artists", artistActions.browse);
 router.get("/api/artists/:id", artistActions.read);
-router.put("/api/artists/:id", artistActions.edit); 
+router.put("/api/artists/:id", artistActions.edit);
 router.post("/api/artists", artistActions.add);
 router.delete("/api/artists/:id", artistActions.destroy);
 
@@ -43,13 +42,8 @@ router.get("/api/collections", collectionActions.browse);
 
 // --- COMMENT --- //
 
-import commentActions from "./modules/comment/commentActions";
-router.get("/api/comments", commentActions.browse);
-
-
-
-import commentActions from "./modules/comment/commentActions";
 import artistRepository from "./modules/artist/artistRepository";
+import commentActions from "./modules/comment/commentActions";
 router.get("/api/comments", commentActions.browse);
 
 /* ************************************************************************* */
