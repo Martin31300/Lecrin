@@ -30,10 +30,10 @@ const edit: RequestHandler = async (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     const artist = req.body;
     const result = await commentRepository.updateById(artist, id);
-    if (result) {
-      res.json(result);
+    if (result.affectedRows > 0) {
+      res.sendStatus(204);
     } else {
-      res.sendStatus(400);
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);
@@ -44,8 +44,8 @@ const add: RequestHandler = async (req, res, next) => {
   try {
     const newComment = req.body;
     const result = await commentRepository.create(newComment);
-    if (result) {
-      res.json(result);
+    if (result.affectedRows != null) {
+      res.status(201).json(result);
     } else {
       res.sendStatus(400);
     }
@@ -58,8 +58,8 @@ const destroy: RequestHandler = async (req, res, next) => {
   try {
     const id = Number.parseInt(req.params.id);
     const result = await commentRepository.deleteById(id);
-    if (result.affectedRows) {
-      res.json(result);
+    if (result.affectedRows > 0) {
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }
