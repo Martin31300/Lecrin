@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router";
-import Home from "./pages/Home";
 import Artist from "./pages/Artist";
 
 // Create router configuration with routes

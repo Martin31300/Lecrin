@@ -3,7 +3,6 @@ import Nav from "../components/Nav";
 import Searchbar from "../components/Searchbar";
 
 function Artist() {
-
   return (
     <>
       <article>
@@ -13,10 +12,10 @@ function Artist() {
         <Searchbar />
       </article>
       <article>
-        < ArtistCard />
+        <ArtistCard />
       </article>
     </>
-  )
+  );
 }
 
-export default Artist
+export default Artist;
