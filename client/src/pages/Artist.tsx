@@ -1,4 +1,22 @@
+import ArtistCard from "../components/ArtistCard";
+import Nav from "../components/Nav";
+import Searchbar from "../components/Searchbar";
+
 function Artist() {
-  return;
+
+  return (
+    <>
+      <article>
+        <Nav />
+      </article>
+      <article>
+        <Searchbar />
+      </article>
+      <article>
+        < ArtistCard />
+      </article>
+    </>
+  )
 }
-export default Artist;
+
+export default Artist
