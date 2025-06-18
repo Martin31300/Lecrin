@@ -1,7 +1,7 @@
 import "./Home.css";
 import "../components/artworkCard";
-import ArtworkCard from "../components/artworkCard";
 import Searchbar from "../components/Searchbar";
+import ArtworkCard from "../components/artworkCard";
 
 function Home() {
   return (

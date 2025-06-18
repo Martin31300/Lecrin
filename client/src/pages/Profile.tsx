@@ -1,6 +1,6 @@
 import "./Profile.css";
-import pictoProfil from "../assets/images/pictos/picto-profil.svg";
 import OmayaPaki from "../assets/images/Snapchat-639628284.jpg";
+// import pictoProfil from "../assets/images/pictos/picto-profil.svg";
 import BisArtworkCard from "../components/bisArtworkCard";
 
 function Profil() {
