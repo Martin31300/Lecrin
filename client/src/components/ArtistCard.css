@@ -48,10 +48,10 @@
 
 .mvtArtistCard {
   display: flex;
-  gap: 20px
+  gap: 20px;
 }
 
-.mvtArtistCard  :hover {
+.mvtArtistCard :hover {
   background-color: white;
   color: black;
   border-color: black;
@@ -77,5 +77,4 @@
 
 .artistCard .numberArts {
   color: grey;
-
 }
