@@ -59,10 +59,17 @@ router.put("/api/movements/:id", movementActions.edit);
 
 import collectionActions from "./modules/collection/collectionActions";
 router.get("/api/collections", collectionActions.browse);
+router.get("/api/collections/:id", collectionActions.read);
+router.put("/api/collections/:id", collectionActions.edit);
+router.post(
+  "/api/collections",
+  collectionActions.Validatecollection,
+  collectionActions.add,
+);
+router.delete("/api/collections/:id", collectionActions.destroy);
 
 // --- COMMENT --- //
 
-import artistRepository from "./modules/artist/artistRepository";
 import commentActions from "./modules/comment/commentActions";
 router.get("/api/comments", commentActions.browse);
 router.get("/api/comments/:id", commentActions.read);
