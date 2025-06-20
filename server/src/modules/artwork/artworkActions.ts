@@ -1,6 +1,6 @@
 import { type RequestHandler, json } from "express";
-import movementRepository from "../mouvement/movementRepository";
 import Joi from "joi";
+import movementRepository from "../mouvement/movementRepository";
 import artworkRepository from "./artworkRepository";
 
 const ValidateArtwork: RequestHandler = (req, res, next) => {
