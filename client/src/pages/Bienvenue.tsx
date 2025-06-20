@@ -1,0 +1,26 @@
+import { Link } from "react-router-dom";
+import "./Bienvenue.css";
+function Bienvenue() {
+  return (
+    <div className="welcome-page">
+      <article className="connexion">
+        <h1>Bienvenue sur L'Écrin</h1>
+        <div>
+          <h2>Tu as déjà un compte:</h2>
+          <Link className="btn-connexion" to="/SeConnecter">
+            Se connecter{" "}
+          </Link>
+          <h2>Tu n’as pas encore de compte:</h2>
+          <button type="submit" className="btn-connexion">
+            Créer un compte
+          </button>
+        </div>
+        <Link className="link-home" to="/">
+          Continuer sans compte
+        </Link>
+      </article>
+    </div>
+  );
+}
+
+export default Bienvenue;
