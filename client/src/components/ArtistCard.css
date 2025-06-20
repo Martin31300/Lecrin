@@ -1,15 +1,22 @@
 .ArtistCard {
-  display: inline-block !important;
-  padding: 3px 6px;
+  display: flex;
+  flex-direction: column;
+
   border: 1px solid white;
   width: fit-content !important;
   max-width: 100%;
-  width: 399px;
-  height: 353px;
+
   box-sizing: border-box;
+  padding: 20px;
+  gap: 20px;
 }
 
 .imagecard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* ⛔️ empêchera l'image de dépasser */
+  position: relative;
   width: 313px;
   height: 240px;
 }
@@ -17,11 +24,31 @@
 .portrait {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   display: block;
+
+  position: absolute; /* nécessaire pour pouvoir la déplacer/centrer */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.ArtistCard p {
+.infoArtist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nameArtistCard {
   color: var(--white-color);
-  font-family: var(--text-font, "IBM Plex Sans", sans-serif);
+  font-family: var(--title-font);
+  font-size: 16px;
+}
+
+.dateArtistCard,
+.nbreOeuvre {
+  color: var(--grey-color);
+  font-family: var(--title-font);
+  font-size: 16px;
 }

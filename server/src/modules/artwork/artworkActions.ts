@@ -1,5 +1,6 @@
 import { type RequestHandler, json } from "express";
 import artworkRepository from "./artworkRepository";
+import movementRepository from "../mouvement/movementRepository";
 
 const browse: RequestHandler = async (req, res, next) => {
   try {
@@ -14,6 +15,7 @@ const read: RequestHandler = async (req, res, next) => {
   try {
     const parseId = Number.parseInt(req.params.id);
     const artwork = await artworkRepository.selectOne(parseId);
+    artwork.movements = await movementRepository.selectAllByArtwork(parseId);
 
     if (artwork != null) {
       res.json(artwork);
