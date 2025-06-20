@@ -8,14 +8,14 @@ function Mouvement() {
     <>
       <Nav />
       <Searchbar />
-        <article className="mouvement">
+      <article className="mouvement">
         <main className="sectionMouvementCard">
           <MouvementCard />
           <MouvementCard />
           <MouvementCard />
           <MouvementCard />
         </main>
-        </article>
+      </article>
     </>
   );
 }
