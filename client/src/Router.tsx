@@ -3,6 +3,7 @@ import App from "./App";
 import Artist from "./pages/Artist";
 import Bienvenue from "./pages/Bienvenue";
 import Home from "./pages/Home";
+import Mouvement from "./pages/Mouvement";
 import Profil from "./pages/Profile";
 import SeConnecter from "./pages/SeConnecter";
 import ProfileArt from "./pages/profileArt";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "/SeConnecter",
         element: <SeConnecter />,
+      },
+      {
+        path: "/Mouvements",
+        element: <Mouvement />,
       },
     ],
   },
