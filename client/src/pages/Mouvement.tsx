@@ -1,5 +1,5 @@
 import MouvementList from "../components/MouvementList";
-import Searchbar from "../components/Searchbar";
+import Searchbar from "../components/Searchbar/Searchbar";
 import "./Mouvement.css";
 
 function Mouvement() {
