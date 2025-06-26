@@ -12,29 +12,33 @@ type ArtworkCardProps = {
 };
 
 function ArtworkCard({ artwork }: ArtworkCardProps) {
-  const [like, setLike] = useState([]);
-  const [updateLike, setUpdateLike] = useState([]);
-
+  const [like, setLike] = useState<{ user_id: number }[]>([]);
+  const [updateLike, setUpdateLike] = useState<Response | never[]>([]);
+  const [deleteLike, setDeleteLike] = useState<Response | never[]>([]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetch(`http://localhost:3310/api/artworks/${artwork.id}/like`)
       .then((res) => res.json())
       .then((data) => {
-        setLike(data[0].countLike);
+        setLike(data);
         console.log(data);
       });
-  }, [updateLike, artwork.id]);
+  }, [updateLike, artwork.id, deleteLike]);
 
   const handleClick = () => {
-    fetch("http://localhost:3310/api/artworks/like", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: 4, artwork_id: artwork.id }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUpdateLike(data);
-      });
+    if (like.some((u) => u.user_id === 4)) {
+      fetch(`http://localhost:3310/api/artworks/${artwork.id}/like`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 4 }),
+      }).then((res) => setDeleteLike(res));
+    } else {
+      fetch("http://localhost:3310/api/artworks/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 4, artwork_id: artwork.id }),
+      }).then((res) => setUpdateLike(res));
+    }
   };
 
   return (
@@ -63,14 +67,10 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
               </p>
 
               <div className="divLike">
-                <button
-                  type="button"
-                  className="pictoLike"
-                  onClick={handleClick}
-                >
+                <button type="button" className="btnLike" onClick={handleClick}>
                   <img className="pictoLike" src={PictoLike} alt="" />
                 </button>
-                <p className="textPicto">{like}</p>
+                <p className="textPicto">{like.length}</p>
               </div>
 
               <div className="divLike">
