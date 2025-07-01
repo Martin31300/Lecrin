@@ -51,7 +51,7 @@ export type Artwork = {
   // autres champs si besoin
 };
 
-export type Users = {
+export type User = {
   id: number;
   name: string;
   photo: string;

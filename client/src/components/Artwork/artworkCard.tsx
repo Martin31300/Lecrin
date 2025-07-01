@@ -41,6 +41,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
       }).then((res) => setUpdateLike(res));
     }
   };
+  console.log(artwork);
 
   function openModal() {
     setModalIsOpen(true);

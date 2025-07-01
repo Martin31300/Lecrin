@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import "./ProfilUser.css";
 import { useEffect, useState } from "react";
-import type { Users } from "../types/vite-env";
+import pictoProfil from "../assets/images/pictos/picto-profil.svg";
+import ListBisArtworkCard from "../components/Artwork/ListBisArtwork";
+import type { User } from "../types/vite-env";
 
 function ProfilUser() {
   const { id } = useParams();
-
-  const [user, setUser] = useState<Users>();
+  const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +15,6 @@ function ProfilUser() {
       .then((res) => res.json())
       .then((json) => {
         setUser(json);
-
         setLoading(false);
       })
       .catch((err) => {
@@ -37,7 +37,7 @@ function ProfilUser() {
         <header className="headerProfil">
           <article className="firstDivProf">
             <div className="divImgProfil">
-              <img className="imgProfil" src={user.photo} alt="" />
+              <img className="imgProfil" src={pictoProfil} alt="" />
             </div>
 
             <div className="div">
@@ -73,6 +73,8 @@ function ProfilUser() {
             <p className="btnNavProf">Favoris</p>
           </nav>
         </section>
+
+        <ListBisArtworkCard />
       </main>
     </>
   );
