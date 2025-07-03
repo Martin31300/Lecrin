@@ -45,3 +45,16 @@ export type Artwork = {
   countLike: number;
   // autres champs si besoin
 };
+
+export type Users = {
+  id: number;
+  name: string;
+  birthday: string;
+  date_inscription: string;
+  mail: string;
+  password: string;
+  artworks?: Artwork[];
+  admin?: string;
+  artist_id?: Artist[];
+  token : string;
+};

@@ -9,6 +9,8 @@ import ProfilMovement from "./pages/ProfilMovement";
 import Profil from "./pages/Profile";
 import SeConnecter from "./pages/SeConnecter";
 import ProfileArt from "./pages/profileArt";
+import Register from "./pages/Register";
+
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
@@ -41,6 +43,10 @@ export const router = createBrowserRouter([
         element: <Bienvenue />,
       },
       {
+        path: "/register",
+        element: <Register />,
+      },
+      {
         path: "/login",
         element: <SeConnecter />,
       },
@@ -55,3 +61,5 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+
