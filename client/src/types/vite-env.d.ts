@@ -1,4 +1,7 @@
 /// <reference types="vite/client" />
+
+import { JSX } from "react/jsx-runtime";
+
 // This provides types for the Vite-injected env variables on import.meta.env
 // See https://vite.dev/guide/features.html#client-types
 export type Artist = {
@@ -52,4 +55,12 @@ export type User = {
   photo: string;
   admin: string;
   // autres champs si besoin
+};
+
+export type Comment = {
+  id: number;
+  text: string;
+  date: string;
+  artwork: Artwork[];
+  artist: Artist[];
 };
