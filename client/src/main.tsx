@@ -17,9 +17,10 @@ if (rootElement == null) {
 // Render the app inside the root element
 createRoot(rootElement).render(
   <StrictMode>
-     <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>,
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+    ,
   </StrictMode>,
 );
 

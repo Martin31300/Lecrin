@@ -26,13 +26,12 @@ function Register() {
       };
       const response = await fetch(
         "http://localhost:3310/api/users",
-        fetchOptions
+        fetchOptions,
       );
       if (response.ok) {
         toast.success("Inscription confirmée.");
         navigate("/login");
-      }
-      else toast.warning("Veuillez compléter tous les champs.")
+      } else toast.warning("Veuillez compléter tous les champs.");
     } catch (error) {
       console.error(error);
       toast.error("Une erreur est survenue.");

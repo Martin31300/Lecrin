@@ -49,6 +49,7 @@ export type Artwork = {
 export type Users = {
   id: number;
   name: string;
+  photo: string;
   birthday: string;
   date_inscription: string;
   mail: string;
@@ -56,5 +57,5 @@ export type Users = {
   artworks?: Artwork[];
   admin?: string;
   artist_id?: Artist[];
-  token : string;
+  token: string;
 };

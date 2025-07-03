@@ -1,9 +1,8 @@
+import argon from "argon2";
 import type { RequestHandler } from "express";
 import Joi, { required } from "joi";
-import userRepository from "./userRepository";
-import argon from "argon2"; 
 import jwt from "jsonwebtoken";
-
+import userRepository from "./userRepository";
 
 const ValidateUser: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
@@ -49,33 +48,34 @@ const create: RequestHandler = async (req, res, next) => {
     const affectedRows = await userRepository.add(user);
     // Respond with HTTP 201 (Created) and the ID of the newly inserted user
     if (affectedRows) res.sendStatus(201);
-    else 
-      res.sendStatus(422);
+    else res.sendStatus(422);
   } catch (err) {
     next(err);
   }
 };
 
-const login : RequestHandler = async (req, res, next) => {
+const login: RequestHandler = async (req, res, next) => {
   try {
-    const {mail, password} = req.body;
+    const { mail, password } = req.body;
     const user = await userRepository.readByEmail(mail);
-    if(!user)res.status(422).json("Utilisateur introuvable.");
+    if (!user) res.status(422).json("Utilisateur introuvable.");
     else {
       const confirmPassword = await argon.verify(user.password, password);
-      if(!confirmPassword) res.status(422).json("L'identifiant ou le mot de passe est incorrect.");
+      if (!confirmPassword)
+        res.status(422).json("L'identifiant ou le mot de passe est incorrect.");
       else {
-        const token = jwt.sign({id : user.id, admin: user.admin}, process.env.APP_SECRET as string);
-        const {password, ...userWithoutPassword} = user;
-        res.json({userWithoutPassword, token});
+        const token = jwt.sign(
+          { id: user.id, admin: user.admin },
+          process.env.APP_SECRET as string,
+        );
+        const { password, ...userWithoutPassword } = user;
+        res.json({ userWithoutPassword, token });
       }
     }
-    
   } catch (error) {
     next(error);
-    
   }
-}
+};
 
 const destroy: RequestHandler = async (req, res, next) => {
   try {

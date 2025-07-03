@@ -4,14 +4,14 @@ import userLikeArtworkRepository from "./userLikeArtworkRepository";
 //import Joi from "joi";
 
 //const ValidateUserLikeArtworkAction: RequestHandler = (req, res, next) => {
-  //const schema = Joi.object({
-    //user_id , 
-    //artwork_id
-  //});
+//const schema = Joi.object({
+//user_id ,
+//artwork_id
+//});
 
-  //const result = schema.validate(req.body, { abortEarly: false });
-  //if (result.error) res.status(400).json(result.error);
-  //else next();
+//const result = schema.validate(req.body, { abortEarly: false });
+//if (result.error) res.status(400).json(result.error);
+//else next();
 //};
 
 const read: RequestHandler = async (req, res, next) => {

@@ -40,10 +40,12 @@ async function add(newUser: Omit<Users, "id">) {
   return result.affectedRows;
 }
 
-async function readByEmail(mail: string){
+async function readByEmail(mail: string) {
   const [rows] = await db_client.query<Rows>(
-    "Select * from user where mail = ?", [mail]);
-    return rows[0] as Users;
+    "Select * from user where mail = ?",
+    [mail],
+  );
+  return rows[0] as Users;
 }
 
 async function deleteById(id: number) {
@@ -62,4 +64,11 @@ async function updateById(user: Partial<Users>, id: number) {
   return result;
 }
 
-export default { selectAll, selectOne, add, readByEmail, deleteById, updateById };
+export default {
+  selectAll,
+  selectOne,
+  add,
+  readByEmail,
+  deleteById,
+  updateById,
+};
