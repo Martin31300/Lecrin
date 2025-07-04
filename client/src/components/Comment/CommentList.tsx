@@ -41,7 +41,9 @@ function CommentList({
     >
       <img src={artworkImage} alt="Artwork" className="comment-image" />
       <div className="comment-section">
-        {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
+        {comments.length === 0 && (
+          <p>Cette oeuvre n'a reçu aucun commentaire pour le moment.</p>
+        )}
         {comments.map((comment) => (
           <div key={comment.id} className="comment-item">
             <span>
