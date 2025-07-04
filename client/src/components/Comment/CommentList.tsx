@@ -44,7 +44,10 @@ function CommentList({
         {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
         {comments.map((comment) => (
           <div key={comment.id} className="comment-item">
-            <span>{comment.userName}</span>
+            <span>
+              <img src={comment.userPic} alt={comment.userName} />
+              {comment.userName}
+            </span>
             <p>{comment.text}</p>
           </div>
         ))}
