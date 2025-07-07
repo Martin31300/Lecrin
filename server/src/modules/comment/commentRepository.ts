@@ -34,6 +34,7 @@ async function create(newComment: Omit<Comment, "id">) {
   );
   return result;
 }
+
 async function deleteById(id: number) {
   const [result] = await db_client.query<Result>(
     "DELETE FROM comment WHERE id = ?",

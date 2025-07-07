@@ -20,9 +20,10 @@ function CommentList({
 }: CommentListProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
-  const [newComment] = useState("");
-  const [, setSendComment] = useState<Response | null>(null);
+  const [newComment, setNewComment] = useState("");
+  const [sendComment, setSendComment] = useState<Response | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetch(`http://localhost:3310/api/artworks/${artworkId}/comments`)
       .then((res) => {
@@ -32,7 +33,7 @@ function CommentList({
         console.log(data);
         if (data) setComments(data);
       });
-  }, [artworkId]);
+  }, [artworkId, sendComment]);
 
   function textAreaOn() {
     console.log("boutonok");
@@ -43,10 +44,8 @@ function CommentList({
     setTextAreaOpen(false);
   }
 
-  const empty = "";
-
   function send() {
-    if (newComment === empty) {
+    if (!newComment.trim()) {
       alert("Vous ne pouvez pas envoyer de commentaire vide");
     } else {
       fetch("http://localhost:3310/api/comments", {
@@ -78,7 +77,11 @@ function CommentList({
           </button>
         ) : (
           <>
-            <textarea placeholder="Écris ton commentaire ici..." />
+            <textarea
+              placeholder="Écris ton commentaire ici..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
             <button type="button" onClick={textAreaOff}>
               Annuler
             </button>
