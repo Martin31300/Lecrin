@@ -4,11 +4,6 @@ import Joi from "joi";
 import commentRepository from "./commentRepository";
 
 const ValidateComment: RequestHandler = (req, res, next) => {
-  //   const schema = Joi.object({
-  //     comment: Joi.string().alphanum().required,
-  //     date: Joi.date().required(),
-  //   });
-
   const schema = Joi.object({
     text: Joi.string().min(2).max(500).required(),
     date: Joi.date().required(),

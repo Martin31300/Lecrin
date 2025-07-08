@@ -22,6 +22,7 @@ function CommentList({
   const [textAreaOpen, setTextAreaOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [sendComment, setSendComment] = useState<Response | null>(null);
+  const [deleteCom, setDeleteCom] = useState<Response | null>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -30,13 +31,11 @@ function CommentList({
         if (res.ok) return res.json();
       })
       .then((data) => {
-        console.log(data);
         if (data) setComments(data);
       });
-  }, [artworkId, sendComment]);
+  }, [artworkId, sendComment, deleteCom]);
 
   function textAreaOn() {
-    console.log("boutonok");
     setTextAreaOpen(true);
   }
 
@@ -45,19 +44,33 @@ function CommentList({
   }
 
   function send() {
-    if (!newComment.trim()) {
+    const trimmed = newComment.trim();
+
+    if (!trimmed) {
       alert("Vous ne pouvez pas envoyer de commentaire vide");
     } else {
       fetch("http://localhost:3310/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: newComment,
+          text: trimmed,
           date: "2025-07-05",
-          user_id: 1,
+          user_id: 2,
           artwork_id: 2,
         }),
       }).then((res) => setSendComment(res));
+    }
+  }
+
+  function destroy() {
+    if (newComment) {
+      fetch(`http://localhost:3310/api/comments/${artworkId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 2 }),
+      }).then((res) => setDeleteCom(res));
+    } else {
+      ("aucun commentaire à supprimer");
     }
   }
 
@@ -78,6 +91,7 @@ function CommentList({
         ) : (
           <>
             <textarea
+              className="textarea"
               placeholder="Écris ton commentaire ici..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
@@ -99,6 +113,9 @@ function CommentList({
               {comment.userName}
             </span>
             <p>{comment.text}</p>
+            <button type="button" onClick={destroy}>
+              Supprimer
+            </button>
           </div>
         ))}
       </div>
