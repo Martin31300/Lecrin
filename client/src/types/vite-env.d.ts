@@ -71,6 +71,7 @@ export type Comment = {
   date: string;
   artwork: Artwork[];
   artist: Artist[];
+  userId: User[];
   userName: string;
   userPic: string;
 };
