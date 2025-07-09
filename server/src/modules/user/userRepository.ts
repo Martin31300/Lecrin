@@ -27,11 +27,10 @@ async function selectOne(id: number) {
 
 async function add(newUser: Omit<User, "id">) {
   const [result] = await db_client.query<Result>(
-    "INSERT INTO user (name, birthday, date_inscription, mail, password, artist_id) values (?, ?, ?, ?, ?, ?)",
+    "INSERT INTO user (name, birthday, mail, password, artist_id) values (?, ?, ?, ?, ?)",
     [
       newUser.name,
       newUser.birthday,
-      newUser.date_inscription,
       newUser.mail,
       newUser.password,
       newUser.artist_id,
