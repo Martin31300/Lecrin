@@ -31,14 +31,8 @@ function CommentList({
       })
       .then((data) => {
         if (data) setComments(data);
-      })
-      .catch((error) =>
-        console.error(
-          "une erreur est survenue lors de la récupération des commentaires",
-          error,
-        ),
-      );
-  }, [artworkId]); // <= quand est ce que le code useEffect va etre executé
+      });
+  }, [artworkId]);
 
   function textAreaOn() {
     setTextAreaOpen(true);
@@ -58,11 +52,11 @@ function CommentList({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${user?.token}`,
         },
         body: JSON.stringify({
           text: trimmed,
-          date: "2025-07-05",
+          date: new Date().toISOString(),
           user_id: user?.id,
           artwork_id: artworkId,
         }),
@@ -90,7 +84,7 @@ function CommentList({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Authorization": `Bearer ${user?.token}`,
       },
     }).then((res) => {
       if (res.ok) {

@@ -544,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`collection` (
 CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`comment` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `text` TEXT NOT NULL,
-    `date` DATETIME NOT NULL,
+    `date` DATETIME NOT NULL DEFAULT NOW(),
     `user_id` INT NOT NULL,
     `artwork_id` INT NOT NULL,
     PRIMARY KEY (`id`),

@@ -1,4 +1,3 @@
-import { tr } from "@faker-js/faker/.";
 import type { RequestHandler } from "express";
 import Joi from "joi";
 import commentRepository from "./commentRepository";
@@ -6,14 +5,16 @@ import commentRepository from "./commentRepository";
 const ValidateComment: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
     text: Joi.string().min(2).max(500).required(),
-    date: Joi.date().required(),
     user_id: Joi.number().integer().required(),
     artwork_id: Joi.number().integer().required(),
   });
 
   const result = schema.validate(req.body, { abortEarly: false });
-  if (result.error) res.status(400).json(result.error);
-  else next();
+  if (result.error) {
+    res.status(400).json(result.error.details);
+    return;
+  }
+  next();
 };
 
 const browse: RequestHandler = async (req, res, next) => {
