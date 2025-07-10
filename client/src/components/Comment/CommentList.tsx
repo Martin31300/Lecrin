@@ -21,11 +21,7 @@ function CommentList({
   const [comments, setComments] = useState<Comment[]>([]);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [deleteCom, setDeleteCom] = useState<Response | null>(null);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log("comments", comments);
     fetch(`http://localhost:3310/api/artworks/${artworkId}/comments`)
       .then((res) => {
         if (res.ok) return res.json();
@@ -39,7 +35,7 @@ function CommentList({
           error,
         ),
       );
-  }, [artworkId, deleteCom]); // <= quand est ce que le code useEffect va etre executé
+  }, [artworkId]); // <= quand est ce que le code useEffect va etre executé
 
   function textAreaOn() {
     setTextAreaOpen(true);
@@ -57,7 +53,10 @@ function CommentList({
     } else {
       fetch("http://localhost:3310/api/comments", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, // RAJOUTER AUTORIZATION /!\
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify({
           text: trimmed,
           date: "2025-07-05",
@@ -68,7 +67,6 @@ function CommentList({
         .then((res) => {
           if (res.ok) {
             setNewComment("");
-
             return fetch(
               `http://localhost:3310/api/artworks/${artworkId}/comments`,
             );
@@ -79,8 +77,8 @@ function CommentList({
           if (data) {
             setComments(data);
           }
-        });
-      // RAJOUTER UN .CATCH /!\
+        })
+        .catch((error) => console.error("une erreur est survenue", error));
     }
   }
 
@@ -89,12 +87,10 @@ function CommentList({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, //voir si le token a bien été mis dans le TOKEN
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }).then((res) => {
-      setDeleteCom(res);
-      setComments((prev) => prev.filter((com) => com.id !== commentId));
     });
+    setComments((prev) => prev.filter((com) => com.id !== commentId));
   }
 
   return (

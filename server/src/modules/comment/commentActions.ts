@@ -20,8 +20,6 @@ const ValidateComment: RequestHandler = (req, res, next) => {
 const browse: RequestHandler = async (req, res, next) => {
   try {
     const comments = await commentRepository.selectAll();
-    console.log(comments);
-
     res.json(comments);
   } catch (error) {
     next(error);
