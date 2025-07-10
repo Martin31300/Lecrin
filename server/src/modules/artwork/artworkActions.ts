@@ -60,7 +60,6 @@ const destroy: RequestHandler = async (req, res, next) => {
   try {
     const parseId = Number.parseInt(req.params.id);
     const result = await artworkRepository.deleteById(parseId);
-    console.log(req.body.user.id);
 
     if (result.affectedRows > 0) {
       res.sendStatus(204);

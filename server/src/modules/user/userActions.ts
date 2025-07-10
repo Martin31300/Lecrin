@@ -82,7 +82,7 @@ const isAuth: RequestHandler = async (req, res, next) => {
 
 const isAdmin: RequestHandler = async (req, res, next) => {
   const { admin } = req.body.user;
-  if (admin === false) res.status(403).json("Vous n'avez pas les droits.");
+  if (!admin) res.status(403).json("Vous n'avez pas les droits.");
   else next();
 };
 

@@ -61,7 +61,7 @@ export type User = {
   password: string;
   artworks?: Artwork[];
   admin?: string;
-  artist_id?: Artist[];
+  artist_id?: Artist;
   token: string;
 };
 
@@ -69,9 +69,9 @@ export type Comment = {
   id: number;
   text: string;
   date: string;
-  artwork: Artwork[];
-  artist: Artist[];
-  userId: User[];
+  artwork: Artwork;
+  artist: Artist;
+  userId: User;
   userName: string;
   userPic: string;
 };
