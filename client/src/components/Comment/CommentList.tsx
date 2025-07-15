@@ -3,16 +3,13 @@ import Modal from "react-modal";
 import "./CommentList.css";
 import { useUser } from "../../contexts/user.context";
 import type { Comment } from "../../types/vite-env";
-
 Modal.setAppElement("#root");
-
 interface CommentListProps {
   artworkId: number;
   onClose: () => void;
   modalIsOpen: boolean;
   artworkImage: string;
 }
-
 function CommentList({
   artworkId,
   onClose,
@@ -23,7 +20,6 @@ function CommentList({
   const [textAreaOpen, setTextAreaOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const { user } = useUser();
-
   useEffect(() => {
     fetch(`http://localhost:3310/api/artworks/${artworkId}/comments`)
       .then((res) => {
@@ -33,21 +29,19 @@ function CommentList({
         if (data) setComments(data);
       });
   }, [artworkId]);
-
   function textAreaOn() {
     setTextAreaOpen(true);
   }
-
   function textAreaOff() {
     setTextAreaOpen(false);
   }
-
   function send() {
     const trimmed = newComment.trim();
-
     if (!trimmed) {
       alert("Vous ne pouvez pas envoyer de commentaire vide");
     } else {
+      console.log(user?.token);
+      console.log("user", user);
       fetch("http://localhost:3310/api/comments", {
         method: "POST",
         headers: {
@@ -56,8 +50,6 @@ function CommentList({
         },
         body: JSON.stringify({
           text: trimmed,
-          date: new Date().toISOString(),
-          user_id: user?.id,
           artwork_id: artworkId,
         }),
       })
@@ -78,7 +70,6 @@ function CommentList({
         .catch((error) => console.error("une erreur est survenue", error));
     }
   }
-
   function destroy(commentId: number) {
     fetch(`http://localhost:3310/api/comments/${commentId}`, {
       method: "DELETE",
@@ -92,7 +83,6 @@ function CommentList({
       }
     });
   }
-
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -123,7 +113,6 @@ function CommentList({
             </button>
           </>
         )}
-
         {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
         {comments.map((comment) => (
           <div key={comment.id} className="comment-item">
@@ -141,5 +130,4 @@ function CommentList({
     </Modal>
   );
 }
-
 export default CommentList;

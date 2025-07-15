@@ -1,7 +1,7 @@
 import db_client from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 
-type User = {
+export type User = {
   id: number;
   name: string;
   birthday: string;
