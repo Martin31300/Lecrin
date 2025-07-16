@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
+import Artist from "./pages/Artist";
 import Bienvenue from "./pages/Bienvenue";
 import Home from "./pages/Home";
 import Mouvement from "./pages/Mouvement";

@@ -75,7 +75,7 @@ function CommentList({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user?.token}`,
+        Authorization: `Bearer ${user?.token}`,
       },
     }).then((res) => {
       if (res.ok) {
