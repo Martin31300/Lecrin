@@ -1,5 +1,5 @@
 import argon from "argon2";
-import type { RequestHandler, Request } from "express";
+import type { Request, RequestHandler } from "express";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import userRepository from "./userRepository";
@@ -7,11 +7,11 @@ import type { User } from "./userRepository";
 
 export interface AuthenticationRequest extends Request {
   user?: User;
-};
+}
 
-interface PayloadToken extends jwt.JwtPayload{
+interface PayloadToken extends jwt.JwtPayload {
   id?: number;
-};
+}
 
 const ValidateUser: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
@@ -80,16 +80,21 @@ const isAuth: RequestHandler = async (
     const authorization = req.headers.authorization;
     console.log("authorisation", authorization);
     if (!authorization) {
-     res.status(401).json("Authorisation manquant.");
+      res.status(401).json("Authorisation manquant.");
     } else {
       const token = authorization.split(" ")[1];
       console.log("token", token);
       if (!token) res.status(401).json("Token manquant.");
       else {
-        const payload = jwt.verify(token, process.env.APP_SECRET as string) as PayloadToken;
+        const payload = jwt.verify(
+          token,
+          process.env.APP_SECRET as string,
+        ) as PayloadToken;
         console.log("payload", payload);
 
-        const user = await userRepository.selectOne(payload?.id as number)as User;
+        const user = (await userRepository.selectOne(
+          payload?.id as number,
+        )) as User;
         req.user = user;
         next();
       }
