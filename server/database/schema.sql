@@ -554,6 +554,10 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`comment` (
     CONSTRAINT `fk_comment_user1` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
+ALTER TABLE comment
+MODIFY COLUMN date DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+
 
 -- -----------------------------------------------------
 -- Table `BDD_projet_3`.`link_artist_movement`

@@ -152,5 +152,4 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
     </>
   );
 }
-
 export default ArtworkCard;

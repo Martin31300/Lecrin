@@ -39,34 +39,39 @@ function CommentList({
     const trimmed = newComment.trim();
     if (!trimmed) {
       alert("Vous ne pouvez pas envoyer de commentaire vide");
-    } else {
-      fetch("http://localhost:3310/api/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
-          text: trimmed,
-          artwork_id: artworkId,
-        }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            setNewComment("");
-            return fetch(
-              `http://localhost:3310/api/artworks/${artworkId}/comments`,
-            );
-          }
-        })
-        .then((res) => res?.json())
-        .then((data) => {
-          if (data) {
-            setComments(data);
-          }
-        })
-        .catch((error) => console.error("une erreur est survenue", error));
+      return;
     }
+
+    if (!user || !user.id) {
+      alert("Vous devez être connecté pour commenter");
+      return;
+    }
+    fetch("http://localhost:3310/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user?.token}`,
+      },
+      body: JSON.stringify({
+        text: trimmed,
+        artwork_id: artworkId,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          setNewComment("");
+          return fetch(
+            `http://localhost:3310/api/artworks/${artworkId}/comments`,
+          );
+        }
+      })
+      .then((res) => res?.json())
+      .then((data) => {
+        if (data) {
+          setComments(data);
+        }
+      })
+      .catch((error) => console.error("une erreur est survenue", error));
   }
   function destroy(commentId: number) {
     fetch(`http://localhost:3310/api/comments/${commentId}`, {

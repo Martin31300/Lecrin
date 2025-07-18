@@ -10,6 +10,7 @@ export type User = {
   password: string;
   admin: string;
   artist_id: string;
+  photo?: string;
 };
 
 async function selectAll() {
@@ -27,13 +28,14 @@ async function selectOne(id: number) {
 
 async function add(newUser: Omit<User, "id">) {
   const [result] = await db_client.query<Result>(
-    "INSERT INTO user (name, birthday, mail, password, artist_id) values (?, ?, ?, ?, ?)",
+    "INSERT INTO user (name, birthday, mail, password, artist_id, photo) values (?, ?, ?, ?, ?, ?)",
     [
       newUser.name,
       newUser.birthday,
       newUser.mail,
       newUser.password,
       newUser.artist_id,
+      newUser.photo ?? "default.jpg",
     ],
   );
   return result.affectedRows;
