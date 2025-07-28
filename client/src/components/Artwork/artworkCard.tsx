@@ -53,10 +53,6 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
     }
   };
 
-  // function openModal() {
-  //   setModalIsOpen(true);
-  // }
-
   function openCom() {
     setComIsOpen(true);
   }
