@@ -1,13 +1,9 @@
 import ArtworkList from "../components/Artwork/artworkList";
 import "./Home.css";
 import { useNavigate } from "react-router";
-// import { toast } from "react-toastify";
-// import { useUser } from "../contexts/user.context";
 
 function Home() {
-  // const context = useContext(UserContext);
   const navigate = useNavigate();
-  // const { user } = useUser();
 
   return (
     <>
@@ -18,8 +14,6 @@ function Home() {
             <button
               onClick={() => {
                 navigate("/postArtwork");
-                // if (user) navigate("/postArtwork")
-                // else toast.warning("Tu dois être connecté pour poster une anecdote !");
               }}
               type="button"
               className="addBtn"
