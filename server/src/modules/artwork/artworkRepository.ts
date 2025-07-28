@@ -35,7 +35,8 @@ async function selectOne(id: number) {
 
 async function create(newArtwork: Omit<Artwork, "id">) {
   const [result] = await db_client.query<Result>(
-    "INSERT INTO artwork (name, user_id, date_artwork, photo, place, description, dimensions, artist_id, movement_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    `INSERT INTO artwork (name, user_id, date_artwork, photo, musee, ville, pays, description, dimensions)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       newArtwork.name,
       newArtwork.user_id,
@@ -46,8 +47,7 @@ async function create(newArtwork: Omit<Artwork, "id">) {
       newArtwork.pays,
       newArtwork.description,
       newArtwork.dimensions,
-      newArtwork.artist_id,
-      newArtwork.movement_id,
+      // newArtwork.artist_id,
     ],
   );
   return result;
