@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useArtwork } from "../contexts/artwork.context";
+import { useUser } from "../contexts/user.context";
 
 function PostArtwork() {
   const [name, setName] = useState("");
@@ -14,14 +15,19 @@ function PostArtwork() {
   const [description, setDescription] = useState("");
 
   const { artwork, setArtwork } = useArtwork();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const postArtwork = async () => {
     try {
       const fetchOptions = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
         body: JSON.stringify({
+          user_id: user?.id,
           name,
           date_artwork,
           photo,
@@ -42,6 +48,7 @@ function PostArtwork() {
 
       const newArtwork = await response.json();
       setArtwork([newArtwork, ...artwork]);
+      console.log("new artwork", newArtwork);
 
       toast.success("Artwork posté");
       navigate("/");
