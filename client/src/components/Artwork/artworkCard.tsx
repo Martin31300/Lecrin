@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import PictoComment from "../../assets/images/pictos/picto-comment.svg";
 import PictoLike from "../../assets/images/pictos/picto-like.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
-import "./artworkCard.css";
 import { useUser } from "../../contexts/user.context";
 import type { Artwork, Movement } from "../../types/vite-env";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
+import "./artworkCard.css";
 
 type ArtworkCardProps = {
   artwork: Artwork;
@@ -52,6 +52,10 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
       }).then((res) => setUpdateLike(res));
     }
   };
+
+  // function openModal() {
+  //   setModalIsOpen(true);
+  // }
 
   function openCom() {
     setComIsOpen(true);
