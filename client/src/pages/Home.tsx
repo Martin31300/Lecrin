@@ -1,9 +1,13 @@
-import ArtworkList from "../components/Artwork/artworkList";
-import "./Home.css";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import ArtworkList from "../components/Artwork/artworkList";
+import { useUser } from "../contexts/user.context";
+import "./Home.css";
 
 function Home() {
   const navigate = useNavigate();
+
+  const { user } = useUser();
 
   return (
     <>
@@ -13,12 +17,16 @@ function Home() {
             <h1 className="titreHome">À l'honneur (fil d'actualité)</h1>
             <button
               onClick={() => {
-                navigate("/postArtwork");
+                if (user) navigate("/postArtwork");
+                else
+                  toast.warning(
+                    "Vous devez être connecté pour ajouter une œuvre ",
+                  );
               }}
               type="button"
               className="addBtn"
             >
-              Ajouter une oeuvre
+              Ajouter une œuvre
             </button>
           </article>
         </section>

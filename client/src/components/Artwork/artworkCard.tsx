@@ -1,14 +1,15 @@
 // artworkCard.tsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import PictoComment from "../../assets/images/pictos/picto-comment.svg";
 import PictoLike from "../../assets/images/pictos/picto-like.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
-import "./artworkCard.css";
 import { useUser } from "../../contexts/user.context";
 import type { Artwork, Movement } from "../../types/vite-env";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
+import "./artworkCard.css";
 
 type ArtworkCardProps = {
   artwork: Artwork;
@@ -52,6 +53,10 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
       }).then((res) => setUpdateLike(res));
     }
   };
+
+  // function openModal() {
+  //   setModalIsOpen(true);
+  // }
 
   function openCom() {
     setComIsOpen(true);
@@ -106,7 +111,19 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                 {new Date(artwork.date_post).toLocaleDateString()}
               </p>
               <div className="divLike">
-                <button type="button" className="btnLike" onClick={handleClick}>
+                <button
+                  type="button"
+                  className="btnLike"
+                  onClick={() => {
+                    if (!user || !user.id) {
+                      toast.warning(
+                        "Vous devez être connecté pour aimé une œuvre",
+                      );
+                    } else {
+                      handleClick();
+                    }
+                  }}
+                >
                   <img className="pictoLike" src={PictoLike} alt="" />
                 </button>
                 <p className="textPicto">{like.length}</p>
@@ -120,7 +137,6 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                 >
                   <img src={PictoComment} alt="" />
                 </button>
-                <p className="textPicto">4</p>
               </div>
             </div>
           </div>
@@ -151,7 +167,15 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
               </div>
               <button
                 className="saveArtwork"
-                onClick={openPopUpSave}
+                onClick={() => {
+                  if (!user || !user.id) {
+                    toast.warning(
+                      "Vous devez être connecté pour enregistré une œuvre",
+                    );
+                  } else {
+                    openPopUpSave();
+                  }
+                }}
                 type="button"
               >
                 <img className="pictoSave" src={PictoSave} alt="" />
