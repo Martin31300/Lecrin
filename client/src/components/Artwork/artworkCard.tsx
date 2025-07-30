@@ -44,10 +44,6 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
       }).then((res) => setUpdateLike(res));
     }
   };
-  
-  function openModal() {
-    setModalIsOpen(true);
-  }
 
   function openCom() {
     setComIsOpen(true);

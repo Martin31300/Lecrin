@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
 import { router } from "./Router";
+import { ArtworkProvider } from "./contexts/artwork.context";
 import { CollectionProvider } from "./contexts/collection.context";
 import { UserProvider } from "./contexts/user.context";
 
@@ -20,7 +21,9 @@ createRoot(rootElement).render(
   <StrictMode>
     <UserProvider>
       <CollectionProvider>
-        <RouterProvider router={router} />
+        <ArtworkProvider>
+          <RouterProvider router={router} />
+        </ArtworkProvider>
       </CollectionProvider>
     </UserProvider>
   </StrictMode>,
