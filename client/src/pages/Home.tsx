@@ -26,7 +26,7 @@ function Home() {
               type="button"
               className="addBtn"
             >
-              Ajouter une œuvre 1
+              Ajouter une œuvre
             </button>
           </article>
         </section>
