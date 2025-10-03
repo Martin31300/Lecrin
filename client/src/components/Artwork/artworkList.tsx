@@ -24,7 +24,7 @@ function ArtworkList() {
 
   return (
     <div>
-      <Searchbar search={search} setSearch={setSearch} />
+      {/* <Searchbar search={search} setSearch={setSearch} /> */}
       {filteredartworks.map((artwork) => {
         return <ArtworkCard key={artwork.id} artwork={artwork} />;
       })}
