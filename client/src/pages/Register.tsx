@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import "./Register.css";
 import { useRef } from "react";
 import { toast } from "react-toastify";
+import { API_URL } from "../utils/api";
 
 function Register() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Register() {
         }),
       };
       const response = await fetch(
-        "http://localhost:3310/api/users",
+        `${API_URL}/api/users`,
         fetchOptions,
       );
       if (response.ok) {

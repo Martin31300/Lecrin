@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Artwork } from "../types/vite-env";
+import { API_URL } from "../utils/api";
 
 interface ArtworkContextType {
   artwork: Artwork[];
@@ -14,7 +15,7 @@ export const ArtworkProvider = ({
   const [artwork, setArtwork] = useState<Artwork[]>([]);
 
   const refreshArtwork = () => {
-    fetch("http://localhost:3310/api/artworks")
+    fetch(`${API_URL}/api/artworks`)
       .then((res) => res.json())
       .then(setArtwork)
       .catch((err) => console.error("Erreur lors du fetch Artwork:", err));

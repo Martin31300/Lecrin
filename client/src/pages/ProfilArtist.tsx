@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import "./ProfilArtist.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../utils/api";
 import ListArtistBisArtworkCard from "../components/Artwork/ListBisArtwork";
 import type { Artist, Movement } from "../types/vite-env";
 
@@ -11,7 +12,7 @@ function ProfilArtist() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/artists/${id}`)
+    fetch(`${API_URL}/api/artists/${id}`)
       .then((res) => res.json())
       .then((json) => {
         setArtist(json);

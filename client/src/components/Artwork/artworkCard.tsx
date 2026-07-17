@@ -7,6 +7,7 @@ import PictoLike from "../../assets/images/pictos/picto-like.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
 import { useUser } from "../../contexts/user.context";
 import type { Artwork, Movement } from "../../types/vite-env";
+import { API_URL } from "../../utils/api";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
 import "./artworkCard.css";
@@ -25,7 +26,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: fetch dépendances bien gérées ici
   useEffect(() => {
-    fetch(`http://localhost:3310/api/artworks/${artwork.id}/like`)
+    fetch(`${API_URL}/api/artworks/${artwork.id}/like`)
       .then((res) => res.json())
       .then((data) => {
         setLike(data);
@@ -34,7 +35,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
 
   const handleClick = () => {
     if (like.some((u) => u.user_id === user?.id)) {
-      fetch(`http://localhost:3310/api/artworks/${artwork.id}/like`, {
+      fetch(`${API_URL}/api/artworks/${artwork.id}/like`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +44,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
         body: JSON.stringify({ user_id: user?.id }),
       }).then((res) => setDeleteLike(res));
     } else {
-      fetch("http://localhost:3310/api/artworks/like", {
+      fetch(`${API_URL}/api/artworks/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

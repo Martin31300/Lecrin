@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import "./ProfilUser.css";
 import { useEffect, useState } from "react";
 import type { User } from "../types/vite-env";
+import { API_URL } from "../utils/api";
 
 function ProfilUser() {
   const { id } = useParams();
@@ -9,7 +10,7 @@ function ProfilUser() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/users/${id}`)
+    fetch(`${API_URL}/api/users/${id}`)
       .then((res) => res.json())
       .then((json) => {
         setUser(json);

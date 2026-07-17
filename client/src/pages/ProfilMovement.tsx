@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Movement } from "../types/vite-env";
+import { API_URL } from "../utils/api";
 import "./ProfilMovement.css";
 import ListArtistBisArtworkCard from "../components/Artwork/ListBisArtwork";
 
@@ -11,7 +12,7 @@ function ProfilMovement() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/movements/${id}`)
+    fetch(`${API_URL}/api/movements/${id}`)
       .then((res) => res.json())
       .then((json) => {
         setMovement(json);
