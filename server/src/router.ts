@@ -1,20 +1,18 @@
 import express from "express";
 
+import commentActions from "./modules/comment/commentActions";
+import userActions from "./modules/user/userActions";
+import artworkActions from "./modules/artwork/artworkActions";
+import artistActions from "./modules/artist/artistActions";
+import movementActions from "./modules/mouvement/movementActions";
+import collectionActions from "./modules/collection/collectionActions";
+import userLikeArtworkAction from "./modules/user_like_artwork/userLikeArtworkAction";
+
 const router = express.Router();
 
 /* ************************************************************************* */
-// Define Your API Routes Here
+// USER
 /* ************************************************************************* */
-
-// Define item-related routes
-
-// router.get("/api/items", itemActions.browse);
-// router.get("/api/items/:id", itemActions.read);
-// router.post("/api/items", itemActions.add);
-
-// --- USER --- //
-
-import userActions from "./modules/user/userActions";
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.post("/api/users", userActions.ValidateUser, userActions.create);
@@ -22,9 +20,9 @@ router.post("/api/users/login", userActions.login);
 router.delete("/api/users/:id", userActions.isAuth, userActions.destroy);
 router.put("/api/users/:id", userActions.isAuth, userActions.edit);
 
-// --- ARTWORK --- //
-
-import artworkActions from "./modules/artwork/artworkActions";
+/* ************************************************************************* */
+// ARTWORK
+/* ************************************************************************* */
 router.get("/api/artworks", artworkActions.browse);
 router.get("/api/artworks/:id", artworkActions.read);
 router.get("/api/artworks/:id/comments", commentActions.ReadCommentByArtworkId);
@@ -37,9 +35,9 @@ router.post(
 router.delete("/api/artworks/:id", userActions.isAuth, artworkActions.destroy);
 router.put("/api/artworks/:id", userActions.isAuth, artworkActions.edit);
 
-// --- ARTIST --- //
-
-import artistActions from "./modules/artist/artistActions";
+/* ************************************************************************* */
+// ARTIST
+/* ************************************************************************* */
 router.get("/api/artists", artistActions.browse);
 router.get("/api/artists/:id", artistActions.read);
 router.put(
@@ -62,9 +60,9 @@ router.delete(
   artistActions.destroy,
 );
 
-// --- MOVEMENT --- //
-
-import movementActions from "./modules/mouvement/movementActions";
+/* ************************************************************************* */
+// MOVEMENTS
+/* ************************************************************************* */
 router.get("/api/movements", movementActions.browse);
 router.get("/api/movements/:id", movementActions.read);
 router.post(
@@ -87,9 +85,9 @@ router.put(
   movementActions.edit,
 );
 
-// --- COLLECTION --- //
-
-import collectionActions from "./modules/collection/collectionActions";
+/* ************************************************************************* */
+// COLLECTIONS
+/* ************************************************************************* */
 router.get("/api/collections", collectionActions.browse);
 router.get("/api/collections/:id", collectionActions.read);
 router.put("/api/collections/:id", userActions.isAuth, collectionActions.edit);
@@ -105,9 +103,9 @@ router.delete(
   collectionActions.destroy,
 );
 
-// --- COMMENT --- //
-
-import commentActions from "./modules/comment/commentActions";
+/* ************************************************************************* */
+// COMMENTS
+/* ************************************************************************* */
 router.get("/api/comments", commentActions.browse);
 router.get("/api/comments/:id", commentActions.read);
 router.put("/api/comments/:id", userActions.isAuth, commentActions.edit);
@@ -119,10 +117,9 @@ router.post(
 );
 router.delete("/api/comments/:id", userActions.isAuth, commentActions.destroy);
 
-// --- USER_LIKED_ARTWORKS --- //
-
-import userLikeArtworkAction from "./modules/user_like_artwork/userLikeArtworkAction";
-
+/* ************************************************************************* */
+// USER LIKES
+/* ************************************************************************* */
 router.get("/api/artworks/:id/like", userLikeArtworkAction.read);
 router.get("/api/user/:id/likes", userLikeArtworkAction.readAllByUser);
 router.post(
@@ -135,7 +132,5 @@ router.delete(
   userActions.isAuth,
   userLikeArtworkAction.destroy,
 );
-
-/* ************************************************************************* */
 
 export default router;

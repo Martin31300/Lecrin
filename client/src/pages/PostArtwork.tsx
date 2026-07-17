@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useArtwork } from "../contexts/artwork.context";
 import { useUser } from "../contexts/user.context";
+import { API_URL } from "../utils/api";
 
 function PostArtwork() {
   const [name, setName] = useState("");
@@ -39,7 +40,7 @@ function PostArtwork() {
       };
 
       const response = await fetch(
-        "http://localhost:3310/api/artworks",
+        `${API_URL}/api/artworks`,
         fetchOptions,
       );
 

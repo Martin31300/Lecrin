@@ -160,5 +160,5 @@ export default {
   ValidateUser,
   isAuth,
   isAdmin,
-  read,
+  read
 };

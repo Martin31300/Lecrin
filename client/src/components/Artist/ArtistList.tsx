@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Artist } from "../../types/vite-env";
+import { API_URL } from "../../utils/api";
 import ArtistCard from "./ArtistCard";
 import "./ArtistList.css";
 import Searchbar from "../Searchbar/Searchbar";
@@ -14,7 +15,7 @@ function ArtistList() {
   );
 
   useEffect(() => {
-    fetch("http://localhost:3310/api/artists")
+    fetch(`${API_URL}/api/artists`)
       .then((res) => res.json())
       .then((json) => {
         setArtists(json);

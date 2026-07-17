@@ -2,6 +2,7 @@ import { useContext, useRef } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { UserContext } from "../contexts/user.context";
+import { API_URL } from "../utils/api";
 import "./SeConnecter.css";
 
 function SeConnecter() {
@@ -21,7 +22,7 @@ function SeConnecter() {
         }),
       };
       const response = await fetch(
-        "http://localhost:3310/api/users/login",
+        `${API_URL}/api/users/login`,
         fetchOptions,
       );
       if (!response.ok) {

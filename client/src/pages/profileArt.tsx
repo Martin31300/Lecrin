@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import "./profileArt.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../utils/api";
 import PictoComment from "../assets/images/pictos/picto-comment.svg";
 import PictoLike from "../assets/images/pictos/picto-like.svg";
 import PictoSave from "../assets/images/pictos/picto-save.svg";
@@ -14,7 +15,7 @@ function ProfileArt() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/artworks/${id}`)
+    fetch(`${API_URL}/api/artworks/${id}`)
       .then((res) => res.json())
       .then((json) => {
         setArtwork(json);

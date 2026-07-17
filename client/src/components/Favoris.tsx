@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ArtworkCard from "../components/Artwork/artworkCard";
+import { API_URL } from "../utils/api";
 import { useArtwork } from "../contexts/artwork.context";
 import { useUser } from "../contexts/user.context";
 import type { Artwork } from "../types/vite-env";
@@ -11,7 +12,7 @@ function Favoris() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/user/${user?.id}/likes`)
+    fetch(`${API_URL}/api/user/${user?.id}/likes`)
       .then((res) => res.json())
       .then((data) => {
         const ids = data.map((item: Artwork) => item.id);

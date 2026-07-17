@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../../contexts/user.context";
 import type { Comment } from "../../types/vite-env";
+import { API_URL } from "../../utils/api";
 import "./CommentList.css";
 Modal.setAppElement("#root");
 interface CommentListProps {
@@ -23,7 +24,7 @@ function CommentList({
   const [newComment, setNewComment] = useState("");
   const { user } = useUser();
   useEffect(() => {
-    fetch(`http://localhost:3310/api/artworks/${artworkId}/comments`)
+    fetch(`${API_URL}/api/artworks/${artworkId}/comments`)
       .then((res) => {
         if (res.ok) return res.json();
       })
@@ -41,7 +42,7 @@ function CommentList({
   function send() {
     const trimmed = newComment.trim();
 
-    fetch("http://localhost:3310/api/comments", {
+    fetch(`${API_URL}/api/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +57,7 @@ function CommentList({
         if (res.ok) {
           setNewComment("");
           return fetch(
-            `http://localhost:3310/api/artworks/${artworkId}/comments`,
+            `${API_URL}/api/artworks/${artworkId}/comments`,
           );
         }
       })
@@ -69,7 +70,7 @@ function CommentList({
       .catch((error) => console.error("une erreur est survenue", error));
   }
   function destroy(commentId: number) {
-    fetch(`http://localhost:3310/api/comments/${commentId}`, {
+    fetch(`${API_URL}/api/comments/${commentId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
