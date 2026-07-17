@@ -6,7 +6,7 @@
     "db:migrate": "node ./dist/bin/migrate",
     "db:seed": "node ./dist/bin/seed",
     "build": "tsc -p tsconfig.json",
-    "start": "node ./dist/src/app.js",
+    "start": "node ./dist/src/main.js",
     "test": "jest --verbose"
   },
   "dependencies": {
