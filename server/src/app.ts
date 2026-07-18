@@ -80,7 +80,7 @@ import path from "node:path";
 
 // Serve server resources
 
-const publicFolderPath = path.join(__dirname, "../../server/public");
+const publicFolderPath = path.join(__dirname, "../../../server/public");
 
 if (fs.existsSync(publicFolderPath)) {
   app.use(express.static(publicFolderPath));
@@ -88,7 +88,7 @@ if (fs.existsSync(publicFolderPath)) {
 
 // Serve client resources
 
-const clientBuildPath = path.join(__dirname, "../../client/dist");
+const clientBuildPath = path.join(__dirname, "../../../client/dist");
 
 if (fs.existsSync(clientBuildPath)) {
   app.use(express.static(clientBuildPath));
