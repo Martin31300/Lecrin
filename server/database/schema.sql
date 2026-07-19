@@ -11,23 +11,18 @@ SET
     SQL_MODE = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema lecrin
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema BDD_projet_3
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema BDD_projet_3
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `BDD_projet_3` DEFAULT CHARACTER SET utf8mb3;
 
-USE `BDD_projet_3`;
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`artist`
+-- Table `artist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`artist` (
+CREATE TABLE IF NOT EXISTS `artist` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `photo` TEXT,
@@ -39,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`artist` (
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 INSERT INTO
-    `BDD_projet_3`.`artist` (
+    `artist` (
         `id`,
         `name`,
         `photo`,
@@ -164,9 +159,9 @@ VALUES (
 
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`movement`
+-- Table `movement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`movement` (
+CREATE TABLE IF NOT EXISTS `movement` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `photo` TEXT,
@@ -175,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`movement` (
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 INSERT INTO
-    `BDD_projet_3`.`movement` (
+    `movement` (
         `id`,
         `name`,
         `photo`,
@@ -246,9 +241,9 @@ VALUES (
     );
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`user`
+-- Table `user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`user` (
+CREATE TABLE IF NOT EXISTS `user` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(55) NOT NULL,
     `photo` TEXT,
@@ -261,11 +256,11 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`user` (
     PRIMARY KEY (`id`),
     UNIQUE INDEX `mail_UNIQUE` (`mail` ASC) VISIBLE,
     INDEX `fk_user_artist1_idx` (`artist_id` ASC) VISIBLE,
-    CONSTRAINT `fk_user_artist1` FOREIGN KEY (`artist_id`) REFERENCES `BDD_projet_3`.`artist` (`id`)
+    CONSTRAINT `fk_user_artist1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 INSERT INTO
-    `BDD_projet_3`.`user` (
+    `user` (
         `id`,
         `name`,
         `photo`,
@@ -379,9 +374,9 @@ VALUES
 
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`artwork`
+-- Table `artwork`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`artwork` (
+CREATE TABLE IF NOT EXISTS `artwork` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(55) NOT NULL,
     `user_id` INT NOT NULL,
@@ -397,14 +392,14 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`artwork` (
     PRIMARY KEY (`id`),
     INDEX `fk_artwork_user_idx` (`user_id` ASC) VISIBLE,
     INDEX `fk_artwork_artist1_idx` (`artist_id` ASC) VISIBLE,
-    CONSTRAINT `fk_artwork_artist1` FOREIGN KEY (`artist_id`) REFERENCES `BDD_projet_3`.`artist` (`id`),
-    CONSTRAINT `fk_artwork_user` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
+    CONSTRAINT `fk_artwork_artist1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`id`),
+    CONSTRAINT `fk_artwork_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- INSERT TEST
 
 INSERT INTO
-    `BDD_projet_3`.`artwork` (
+    `artwork` (
         `id`,
         `name`,
         `user_id`,
@@ -525,9 +520,9 @@ VALUES (
 (32,'The Slave Ship',1,'1840-01-01','https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Slave-ship.jpg/1200px-Slave-ship.jpg','Museum of Fine Arts','Boston','USA','91 × 122 cm','Critique sociale, mer dramatique.',14);
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`collection`
+-- Table `collection`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`collection` (
+CREATE TABLE IF NOT EXISTS `collection` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(45) NOT NULL,
     `photo` TEXT NOT NULL,
@@ -536,13 +531,13 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`collection` (
     INDEX `fk_collection_user1_idx` (`user_id` ASC) VISIBLE,
     INDEX `fk_collection_id_idx` (`id` ASC) VISIBLE,
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-    CONSTRAINT `fk_collection_user1` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_collection_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`comment`
+-- Table `comment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`comment` (
+CREATE TABLE IF NOT EXISTS `comment` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `text` TEXT NOT NULL,
     `date` DATETIME NOT NULL DEFAULT NOW(),
@@ -551,8 +546,8 @@ CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`comment` (
     PRIMARY KEY (`id`),
     INDEX `fk_comment_user1_idx` (`user_id` ASC) VISIBLE,
     INDEX `fk_comment_artwork1_idx` (`artwork_id` ASC) VISIBLE,
-    CONSTRAINT `fk_comment_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `BDD_projet_3`.`artwork` (`id`),
-    CONSTRAINT `fk_comment_user1` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
+    CONSTRAINT `fk_comment_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`),
+    CONSTRAINT `fk_comment_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 ALTER TABLE comment
@@ -561,34 +556,34 @@ MODIFY COLUMN date DATETIME DEFAULT CURRENT_TIMESTAMP;
 
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`link_artist_movement`
+-- Table `link_artist_movement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`link_artist_movement` (
+CREATE TABLE IF NOT EXISTS `link_artist_movement` (
     `movement_id` INT NOT NULL,
     `artist_id` INT NOT NULL,
     PRIMARY KEY (`movement_id`, `artist_id`),
     INDEX `fk_movement_has_artist_artist1_idx` (`artist_id` ASC) VISIBLE,
     INDEX `fk_movement_has_artist_movement1_idx` (`movement_id` ASC) VISIBLE,
-    CONSTRAINT `fk_movement_has_artist_artist1` FOREIGN KEY (`artist_id`) REFERENCES `BDD_projet_3`.`artist` (`id`),
-    CONSTRAINT `fk_movement_has_artist_movement1` FOREIGN KEY (`movement_id`) REFERENCES `BDD_projet_3`.`movement` (`id`)
+    CONSTRAINT `fk_movement_has_artist_artist1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`id`),
+    CONSTRAINT `fk_movement_has_artist_movement1` FOREIGN KEY (`movement_id`) REFERENCES `movement` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 INSERT INTO
-    `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+    `link_artist_movement` (movement_id, artist_id)
 VALUES (4, 1);
 INSERT INTO
-    `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+    `link_artist_movement` (movement_id, artist_id)
 VALUES (2, 2);
 INSERT INTO
-    `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+    `link_artist_movement` (movement_id, artist_id)
 VALUES (1, 3);
 INSERT INTO
-    `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+    `link_artist_movement` (movement_id, artist_id)
 VALUES (3, 4);
 INSERT INTO
-    `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+    `link_artist_movement` (movement_id, artist_id)
 VALUES (5, 5);
-INSERT INTO `BDD_projet_3`.`link_artist_movement` (movement_id, artist_id)
+INSERT INTO `link_artist_movement` (movement_id, artist_id)
 VALUES 
 (4, 6), -- Munch
 (7, 7), -- Botticelli
@@ -603,20 +598,20 @@ VALUES
 
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`movement_has_artwork`
+-- Table `movement_has_artwork`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`movement_has_artwork` (
+CREATE TABLE IF NOT EXISTS `movement_has_artwork` (
     `movement_id` INT NOT NULL,
     `artwork_id` INT NOT NULL,
     PRIMARY KEY (`movement_id`, `artwork_id`),
     INDEX `fk_movement_has_artwork_artwork1_idx` (`artwork_id` ASC) VISIBLE,
     INDEX `fk_movement_has_artwork_movement1_idx` (`movement_id` ASC) VISIBLE,
-    CONSTRAINT `fk_movement_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `BDD_projet_3`.`artwork` (`id`),
-    CONSTRAINT `fk_movement_has_artwork_movement1` FOREIGN KEY (`movement_id`) REFERENCES `BDD_projet_3`.`movement` (`id`)
+    CONSTRAINT `fk_movement_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`),
+    CONSTRAINT `fk_movement_has_artwork_movement1` FOREIGN KEY (`movement_id`) REFERENCES `movement` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 INSERT INTO
-    `BDD_projet_3`.`movement_has_artwork` (movement_id, artwork_id)
+    `movement_has_artwork` (movement_id, artwork_id)
 VALUES (1, 4), -- La Nuit étoilée (Post-Impressionnisme)
 (2, 2), -- Les Demoiselles d'Avignon (Cubisme)
 (1, 3), -- Impression, soleil levant (Impressionnisme)
@@ -645,57 +640,57 @@ VALUES (1, 4), -- La Nuit étoilée (Post-Impressionnisme)
 (4, 1);
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`user_following_artist`
+-- Table `user_following_artist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`user_following_artist` (
+CREATE TABLE IF NOT EXISTS `user_following_artist` (
     `artist_id` INT NOT NULL,
     `user_id` INT NOT NULL,
     `date` DATETIME NOT NULL,
     PRIMARY KEY (`artist_id`, `user_id`),
     INDEX `fk_artist_has_user_user1_idx` (`user_id` ASC) VISIBLE,
     INDEX `fk_artist_has_user_artist1_idx` (`artist_id` ASC) VISIBLE,
-    CONSTRAINT `fk_artist_has_user_artist1` FOREIGN KEY (`artist_id`) REFERENCES `BDD_projet_3`.`artist` (`id`),
-    CONSTRAINT `fk_artist_has_user_user1` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
+    CONSTRAINT `fk_artist_has_user_artist1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`id`),
+    CONSTRAINT `fk_artist_has_user_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`user_liked_artwork`
+-- Table `user_liked_artwork`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`user_liked_artwork` (
+CREATE TABLE IF NOT EXISTS `user_liked_artwork` (
     `user_id` INT NOT NULL,
     `artwork_id` INT NOT NULL,
     PRIMARY KEY (`user_id`, `artwork_id`),
     INDEX `fk_user_has_artwork_artwork1_idx` (`artwork_id` ASC) VISIBLE,
     INDEX `fk_user_has_artwork_user1_idx` (`user_id` ASC) VISIBLE,
-    CONSTRAINT `fk_user_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `BDD_projet_3`.`artwork` (`id`),
-    CONSTRAINT `fk_user_has_artwork_user1` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
+    CONSTRAINT `fk_user_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`),
+    CONSTRAINT `fk_user_has_artwork_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`user_saving_artwork`
+-- Table `user_saving_artwork`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`user_saving_artwork` (
+CREATE TABLE IF NOT EXISTS `user_saving_artwork` (
     `user_id` INT NOT NULL,
     `artwork_id` INT NOT NULL,
     `date` DATETIME NOT NULL,
     PRIMARY KEY (`user_id`, `artwork_id`),
     INDEX `fk_user_has_artwork_artwork2_idx` (`artwork_id` ASC) VISIBLE,
     INDEX `fk_user_has_artwork_user2_idx` (`user_id` ASC) VISIBLE,
-    CONSTRAINT `fk_user_has_artwork_artwork2` FOREIGN KEY (`artwork_id`) REFERENCES `BDD_projet_3`.`artwork` (`id`),
-    CONSTRAINT `fk_user_has_artwork_user2` FOREIGN KEY (`user_id`) REFERENCES `BDD_projet_3`.`user` (`id`)
+    CONSTRAINT `fk_user_has_artwork_artwork2` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`),
+    CONSTRAINT `fk_user_has_artwork_user2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
--- Table `BDD_projet_3`.`collection_has_artwork`
+-- Table `collection_has_artwork`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BDD_projet_3`.`collection_has_artwork` (
+CREATE TABLE IF NOT EXISTS `collection_has_artwork` (
     `collection_id` INT NOT NULL,
     `artwork_id` INT NOT NULL,
     PRIMARY KEY (`collection_id`, `artwork_id`),
     INDEX `fk_collection_has_artwork_artwork1_idx` (`artwork_id` ASC) VISIBLE,
     INDEX `fk_collection_has_artwork_collection1_idx` (`collection_id` ASC) VISIBLE,
-    CONSTRAINT `fk_collection_has_artwork_collection1` FOREIGN KEY (`collection_id`) REFERENCES `BDD_projet_3`.`collection` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_collection_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `BDD_projet_3`.`artwork` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_collection_has_artwork_collection1` FOREIGN KEY (`collection_id`) REFERENCES `collection` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_collection_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 SET SQL_MODE = @OLD_SQL_MODE;
