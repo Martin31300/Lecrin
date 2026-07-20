@@ -4,7 +4,6 @@ import Artist from "./pages/Artist";
 import Bienvenue from "./pages/Bienvenue";
 import Home from "./pages/Home";
 import Mouvement from "./pages/Mouvement";
-import PostArtwork from "./pages/PostArtwork";
 import ProfilArtist from "./pages/ProfilArtist";
 import ProfilMovement from "./pages/ProfilMovement";
 import ProfilUser from "./pages/ProfilUser";
@@ -62,10 +61,6 @@ export const router = createBrowserRouter([
       {
         path: "/Mouvements/:id",
         element: <ProfilMovement />,
-      },
-      {
-        path: "/postArtwork",
-        element: <PostArtwork />,
       },
     ],
   },

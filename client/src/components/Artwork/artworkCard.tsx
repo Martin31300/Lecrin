@@ -11,6 +11,7 @@ import { API_URL } from "../../utils/api";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
 import "./artworkCard.css";
+import AuthModal from "../Modal/AuthModal";
 
 type ArtworkCardProps = {
   artwork: Artwork;
@@ -22,6 +23,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
   const [deleteLike, setDeleteLike] = useState<Response | never[]>([]);
   const [comIsOpen, setComIsOpen] = useState(false);
   const [popUpIsOpen, setPopUpIsOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { user } = useUser();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: fetch dépendances bien gérées ici
@@ -73,6 +75,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
 
   return (
     <>
+      {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
       <CommentList
         artworkId={artwork.id}
         artworkImage={artwork.photo}
@@ -113,9 +116,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                   className="btnLike"
                   onClick={() => {
                     if (!user || !user.id) {
-                      toast.warning(
-                        "Vous devez être connecté pour aimé une œuvre",
-                      );
+                      setAuthModalOpen(true);
                     } else {
                       handleClick();
                     }
@@ -166,9 +167,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                 className="saveArtwork"
                 onClick={() => {
                   if (!user || !user.id) {
-                    toast.warning(
-                      "Vous devez être connecté pour enregistré une œuvre",
-                    );
+                    setAuthModalOpen(true);
                   } else {
                     openPopUpSave();
                   }

@@ -1,33 +1,20 @@
-import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import ArtworkList from "../components/Artwork/artworkList";
-import { useUser } from "../contexts/user.context";
 import "./Home.css";
+import { useState } from "react";
+import AuthModal from "../components/Modal/AuthModal";
+import { PostArtwork } from "../components/PostArtwork/PostArtwork";
 
 function Home() {
-  const navigate = useNavigate();
-
-  const { user } = useUser();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   return (
     <>
+      {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
       <main>
         <section className="hautHome">
           <article className="divH1-btn">
             <h1 className="titreHome">Fil d'actualité</h1>
-            <button
-              onClick={() => {
-                if (user) navigate("/postArtwork");
-                else
-                  toast.warning(
-                    "Vous devez être connecté pour ajouter une œuvre ",
-                  );
-              }}
-              type="button"
-              className="addBtn"
-            >
-              Ajouter une œuvre
-            </button>
+            <PostArtwork />
           </article>
         </section>
 

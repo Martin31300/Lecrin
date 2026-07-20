@@ -1,0 +1,77 @@
+.auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.auth-modal-card {
+  background: var(--black-color);
+  border: 1px solid var(--white-color);
+  padding: 2rem;
+  width: 320px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-modal-card h2 {
+  color: var(--white-color);
+  font-family: var(--title-font);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.auth-modal-card p {
+  color: var(--white-color);
+  font-family: var(--text-font);
+  font-weight: 100;
+  font-size: 16px;
+}
+
+.auth-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auth-modal-buttons button {
+  padding: 8px 54px;
+  border: 1px solid var(--white-color);
+  background-color: transparent;
+  color: var(--white-color);
+  font-family: var(--title-font);
+  font-size: 16px;
+  font-weight: 200;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s
+    ease;
+}
+
+.auth-modal-buttons button:hover {
+  background-color: var(--white-color);
+  color: var(--black-color);
+  border-color: var(--black-color);
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--white-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.auth-modal-card.large {
+  width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+}

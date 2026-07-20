@@ -1,3 +1,4 @@
+import { exist } from "joi";
 import db_client from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 
@@ -66,4 +67,19 @@ async function updateById(artist: Partial<Artist>, id: number) {
   return result;
 }
 
-export default { selectAll, selectOne, create, deleteById, updateById };
+async function findOrCreate(name: string): Promise<number> {
+  const [[existing]] = await db_client.query<Rows>(
+    "SELECT id FROM artist WHERE LOWER(name) = LOWER (?)",
+    [name],
+  );
+
+  if (existing) return existing.id;
+
+  const [result] = await db_client.query<Result>(
+    "INSERT INTO artist (name) VALUES (?)",
+    [name],
+  );
+  return result.insertId;
+}
+
+export default { selectAll, selectOne, create, deleteById, updateById, findOrCreate };

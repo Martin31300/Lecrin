@@ -2,18 +2,20 @@ import { type RequestHandler, json } from "express";
 import Joi from "joi";
 import movementRepository from "../mouvement/movementRepository";
 import artworkRepository from "./artworkRepository";
+import artistRepository from "../artist/artistRepository";
 
 const ValidateArtwork: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string().alphanum().min(1).max(255).required(),
-    description: Joi.string().alphanum().required(),
-    ville: Joi.string().alphanum(),
-    pays: Joi.string().alphanum(),
-    musee: Joi.string().alphanum(),
-    photo: Joi.string().alphanum(),
+    name: Joi.string().min(1).max(55).required(),
+    description: Joi.string().required(),
+    ville: Joi.string().allow(""),
+    pays: Joi.string().allow(""),
+    musee: Joi.string().allow(""),
+    photo: Joi.string().allow(""),
     user_id: Joi.number().integer().positive().required(),
-    date_artwork: Joi.date().max("now").required(),
-    dimensions: Joi.string().alphanum().required(),
+    date_artwork: Joi.string().allow(""),
+    dimensions: Joi.string().allow(""),
+    artist_name: Joi.string().min(1).required(),
   });
 
   const result = schema.validate(req.body, { abortEarly: false });
@@ -48,10 +50,15 @@ const read: RequestHandler = async (req, res, next) => {
 
 const add: RequestHandler = async (req, res, next) => {
   try {
-    const result = await artworkRepository.create(req.body);
+    const { artist_name, ...artworkData } = req.body;
+
+    const artist_id = await artistRepository.findOrCreate(artist_name);
+
+    const result = await artworkRepository.create({ ...artworkData, artist_id });
 
     if (result.affectedRows != null) {
-      res.status(201).json(result);
+      const newArtwork = await artworkRepository.selectOne(result.insertId);
+      res.status(201).json(newArtwork);
     } else {
       res.sendStatus(400);
     }

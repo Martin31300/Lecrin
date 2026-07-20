@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../../contexts/user.context";
 import type { Comment } from "../../types/vite-env";
 import { API_URL } from "../../utils/api";
 import "./CommentList.css";
+import AuthModal from "../Modal/AuthModal";
+
 Modal.setAppElement("#root");
 interface CommentListProps {
   artworkId: number;
@@ -22,6 +23,7 @@ function CommentList({
   const [comments, setComments] = useState<Comment[]>([]);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { user } = useUser();
   useEffect(() => {
     fetch(`${API_URL}/api/artworks/${artworkId}/comments`)
@@ -83,63 +85,66 @@ function CommentList({
     });
   }
   return (
-    <Modal
-      isOpen={comIsOpen}
-      onRequestClose={onClose}
-      contentLabel="Commentaires"
-      className="react-modal-content"
-      overlayClassName="react-modal-overlay"
-    >
-      <img src={artworkImage} alt="Artwork" className="comment-image" />
-      <div className="comment-section">
-        {!textAreaOpen ? (
-          <button className="BtnPP" type="button" onClick={textAreaOn}>
-            Ajouter un commentaire
-          </button>
-        ) : (
-          <>
-            <textarea
-              className="textarea"
-              placeholder="Écris ton commentaire ici..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <button className="BtnPP" type="button" onClick={textAreaOff}>
-              Annuler
-            </button>
-            <button
-              className="BtnPP"
-              type="button"
-              onClick={() => {
-                if (!user || !user.id) {
-                  toast.warning(
-                    "Vous devez être connecté pour poster un commentaire",
-                  );
-                } else {
-                  send();
-                }
-              }}
-            >
-              Envoyer
-            </button>
-          </>
-        )}
-        {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
-        {comments.map((comment) => (
-          <div key={comment.id} className="comment-item">
-            <span>
-              <img src={comment.userPic} alt={comment.userName} />
-              {comment.userName}
-            </span>
-            <p>{comment.text}</p>
+    <>
 
-            <button type="button" onClick={() => destroy(comment.id)}>
-              Supprimer
+      {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
+      <Modal
+        isOpen={comIsOpen}
+        onRequestClose={onClose}
+        contentLabel="Commentaires"
+        className="react-modal-content"
+        overlayClassName="react-modal-overlay"
+      >
+        <img src={artworkImage} alt="Artwork" className="comment-image" />
+        <div className="comment-section">
+          {!textAreaOpen ? (
+            <button className="BtnPP" type="button" onClick={textAreaOn}>
+              Ajouter un commentaire
             </button>
-          </div>
-        ))}
-      </div>
-    </Modal>
+          ) : (
+            <>
+              <textarea
+                className="textarea"
+                placeholder="Écris ton commentaire ici..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button className="BtnPP" type="button" onClick={textAreaOff}>
+                Annuler
+              </button>
+              <button
+                className="BtnPP"
+                type="button"
+                onClick={() => {
+                  if (!user || !user.id) {
+                    setAuthModalOpen(true);
+
+                  } else {
+                    send();
+                  }
+                }}
+              >
+                Envoyer
+              </button>
+            </>
+          )}
+          {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
+          {comments.map((comment) => (
+            <div key={comment.id} className="comment-item">
+              <span>
+                <img src={comment.userPic} alt={comment.userName} />
+                {comment.userName}
+              </span>
+              <p>{comment.text}</p>
+
+              <button type="button" onClick={() => destroy(comment.id)}>
+                Supprimer
+              </button>
+            </div>
+          ))}
+        </div>
+      </Modal>
+    </>
   );
 }
 export default CommentList;
