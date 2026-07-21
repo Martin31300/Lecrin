@@ -1,4 +1,3 @@
-import { exist } from "joi";
 import db_client from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 
