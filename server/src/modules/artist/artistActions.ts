@@ -19,8 +19,13 @@ const ValidateArtist: RequestHandler = (req, res, next) => {
 
 const browse: RequestHandler = async (req, res, next) => {
   try {
-    const artists = await artistRepository.selectAll();
-    res.json(artists);
+    if (req.query.search) {
+      const artists = await artistRepository.search(req.query.search as string);
+      res.json(artists);
+    } else {
+      const artists = await artistRepository.selectAll();
+      res.json(artists);
+    }
   } catch (error) {
     next(error);
   }

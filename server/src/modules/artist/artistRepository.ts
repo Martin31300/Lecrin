@@ -1,3 +1,4 @@
+import { exist } from "joi";
 import db_client from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 
@@ -66,4 +67,42 @@ async function updateById(artist: Partial<Artist>, id: number) {
   return result;
 }
 
-export default { selectAll, selectOne, create, deleteById, updateById };
+async function findOrCreate(artistData: {
+  name: string;
+  photo?: string;
+  description?: string;
+  birthday?: string;
+  death_date?: string;
+  pays?: string;
+}): Promise<number> {
+  const [[existing]] = await db_client.query<Rows>(
+    "SELECT id FROM artist WHERE LOWER(name) = LOWER(?)",
+    [artistData.name],
+  );
+  if (existing) return existing.id;
+
+  const [result] = await db_client.query<Result>(
+    "INSERT INTO artist (name, photo, description, birthday, death_date, pays) VALUES (?, ?, ?, ?, ?, ?)",
+    [artistData.name, artistData.photo ?? null, artistData.description ?? null, artistData.birthday ?? null, artistData.death_date ?? null, artistData.pays ?? null],
+  );
+  return result.insertId;
+}
+
+async function search(name: string) {
+  const [artists] = await db_client.query<Rows>(
+    "SELECT id, name, photo FROM artist WHERE LOWER(name) LIKE LOWER(?) LIMIT 8",
+    [`%${name}%`],
+  );
+  return artists;
+}
+
+async function insertArtistMovements(artistId: number, movementIds: number[]) {
+  for (const movementId of movementIds) {
+    await db_client.query<Result>(
+      "INSERT IGNORE INTO link_artist_movement (artist_id, movement_id) VALUES (?, ?)",
+      [artistId, movementId],
+    );
+  }
+}
+
+export default { selectAll, selectOne, create, deleteById, updateById, findOrCreate, search, insertArtistMovements };

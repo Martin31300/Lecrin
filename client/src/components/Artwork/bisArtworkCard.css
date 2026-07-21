@@ -1,25 +1,37 @@
 .divListBisArt {
-  column-count: 3;
-  column-gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
 }
+
+.colBisArt {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
 .cardArt {
-  display: inline-block;
   width: 100%;
-  margin-bottom: 20px;
   border: 1px solid var(--white-color);
   overflow: hidden;
-  background-color: #000; /* si tu veux du contraste */
+  background-color: #000;
   position: relative;
+  min-height: 150px;
 }
 
 /* DIV EN HAUT : AVEC DÉGRADÉ DE HAUT EN BAS */
 .divUserCard {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 8px 8px 8px;
+  padding: 8px;
 }
 
 .divUserCard::before {
@@ -84,14 +96,17 @@
 
 /* DIV EN BAS : AVEC DÉGRADÉ DE BAS EN HAUT */
 .infoCardBis {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 2;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
   gap: 6px;
-  padding: 20px 20px 20px 20px;
+  padding: 20px;
 }
 
 .infoCardBis div {
@@ -149,12 +164,15 @@
 
 @media (max-width: 768px) {
   .divListBisArt {
-    column-count: 1;
+    flex-direction: column;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .divListBisArt {
-    column-count: 2;
+    gap: 12px;
+  }
+  .colBisArt {
+    gap: 12px;
   }
 }

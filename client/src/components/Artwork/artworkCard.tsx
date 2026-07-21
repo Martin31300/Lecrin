@@ -1,7 +1,6 @@
 // artworkCard.tsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import PictoComment from "../../assets/images/pictos/picto-comment.svg";
 import PictoLike from "../../assets/images/pictos/picto-like.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
@@ -11,49 +10,22 @@ import { API_URL } from "../../utils/api";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
 import "./artworkCard.css";
+import AuthModal from "../Modal/AuthModal";
+import { useLike } from "../../hooks/useLike";
+import { Heart } from "lucide-react";
+
 
 type ArtworkCardProps = {
   artwork: Artwork;
 };
 
 function ArtworkCard({ artwork }: ArtworkCardProps) {
-  const [like, setLike] = useState<{ user_id: number }[]>([]);
-  const [updateLike, setUpdateLike] = useState<Response | never[]>([]);
-  const [deleteLike, setDeleteLike] = useState<Response | never[]>([]);
+
   const [comIsOpen, setComIsOpen] = useState(false);
   const [popUpIsOpen, setPopUpIsOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { user } = useUser();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: fetch dépendances bien gérées ici
-  useEffect(() => {
-    fetch(`${API_URL}/api/artworks/${artwork.id}/like`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLike(data);
-      });
-  }, [updateLike, artwork.id, deleteLike]);
-
-  const handleClick = () => {
-    if (like.some((u) => u.user_id === user?.id)) {
-      fetch(`${API_URL}/api/artworks/${artwork.id}/like`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
-        body: JSON.stringify({ user_id: user?.id }),
-      }).then((res) => setDeleteLike(res));
-    } else {
-      fetch(`${API_URL}/api/artworks/like`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
-        body: JSON.stringify({ user_id: user?.id, artwork_id: artwork.id }),
-      }).then((res) => setUpdateLike(res));
-    }
-  };
+  const { likeCount, isLiked, toggleLike } = useLike(artwork.id)
 
   function openCom() {
     setComIsOpen(true);
@@ -73,6 +45,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
 
   return (
     <>
+      {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
       <CommentList
         artworkId={artwork.id}
         artworkImage={artwork.photo}
@@ -112,18 +85,13 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                   type="button"
                   className="btnLike"
                   onClick={() => {
-                    if (!user || !user.id) {
-                      toast.warning(
-                        "Vous devez être connecté pour aimé une œuvre",
-                      );
-                    } else {
-                      handleClick();
-                    }
+                    if (!user || !user.id) setAuthModalOpen(true);
+                    else toggleLike();
                   }}
                 >
-                  <img className="pictoLike" src={PictoLike} alt="" />
+                  <Heart size={20} fill={isLiked ? "white" : "none"} stroke="white" />
                 </button>
-                <p className="textPicto">{like.length}</p>
+                <p className="textPicto">{likeCount}</p>
               </div>
               <div className="divLike">
                 <button
@@ -156,7 +124,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
               ) : null}
               <p className="infoArtwork">{artwork.dimensions}</p>
               <div className="divMvt">
-                {artwork.movements.map((movement: Movement) => (
+                {artwork.movements.filter((movement: Movement) => movement.id !== null).map((movement: Movement) => (
                   <Link key={movement.id} to={`/Mouvements/${movement.id}`}>
                     <p className="mvtArtwork">{movement.name}</p>
                   </Link>
@@ -166,9 +134,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                 className="saveArtwork"
                 onClick={() => {
                   if (!user || !user.id) {
-                    toast.warning(
-                      "Vous devez être connecté pour enregistré une œuvre",
-                    );
+                    setAuthModalOpen(true);
                   } else {
                     openPopUpSave();
                   }

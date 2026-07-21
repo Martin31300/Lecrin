@@ -3,13 +3,25 @@ import type { User } from "../types/vite-env";
 
 interface UserContextType {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: (user: User | null) => void;
 }
 
 export const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
+
+  const setUser = (newUser: User | null) => {
+    if (newUser) {
+      localStorage.setItem("user", JSON.stringify(newUser));
+    } else {
+      localStorage.removeItem("user");
+    }
+    setUserState(newUser);
+  };
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

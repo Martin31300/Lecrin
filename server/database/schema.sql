@@ -25,11 +25,11 @@ SET
 CREATE TABLE IF NOT EXISTS `artist` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `photo` TEXT,
-    `pays` TEXT NOT NULL,
-    `description` TEXT NOT NULL,
-    `birthday` DATETIME NOT NULL,
-    `death_date` DATETIME NULL DEFAULT NULL,
+    `photo` VARCHAR(255) NULL DEFAULT NULL,
+    `pays` VARCHAR(255) NULL DEFAULT NULL,
+    `description` TEXT NULL DEFAULT NULL,
+    `birthday` VARCHAR(20) NULL DEFAULT NULL,
+    `death_date` VARCHAR(20) NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
@@ -380,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `artwork` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(55) NOT NULL,
     `user_id` INT NOT NULL,
-    `date_artwork` DATETIME NOT NULL,
+    `date_artwork` VARCHAR(20),
     `photo` TEXT,
     `date_post` DATETIME NOT NULL DEFAULT NOW(),
     `musee` VARCHAR(255) NULL,
