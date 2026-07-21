@@ -1,12 +1,10 @@
 // artworkCard.tsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import PictoComment from "../../assets/images/pictos/picto-comment.svg";
-import PictoLike from "../../assets/images/pictos/picto-like.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
 import { useUser } from "../../contexts/user.context";
 import type { Artwork, Movement } from "../../types/vite-env";
-import { API_URL } from "../../utils/api";
 import PopUpCollection from "../Collection/PopUpCollection";
 import CommentList from "../Comment/CommentList";
 import "./artworkCard.css";
