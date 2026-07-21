@@ -20,13 +20,13 @@ function ArtistCard({ artist }: ArtistCardProps) {
               {artist.artistName}
               <span className="dateArtistCard">
                 {" "}
-                {new Date(artist.birthday).getFullYear()} -{" "}
-                {new Date(artist.death_date).getFullYear()}
+                {artist.birthday?.split("-")[0]} -{" "}
+                {artist.death_date?.split("-")[0]}
               </span>
             </h2>
 
             <div className="divMvt">
-              {artist.movements.map((movement: Movement) => (
+              {(artist.movements ?? []).filter((movement: Movement) => movement.id !== null).map((movement: Movement) => (
                 <Link key={movement.id} to={`/Mouvements/${movement.id}`}>
                   <p className="mvtArtwork">{movement.name}</p>
                 </Link>
