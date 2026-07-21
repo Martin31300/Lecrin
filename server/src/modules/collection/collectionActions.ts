@@ -79,4 +79,14 @@ const destroy: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, edit, add, destroy, Validatecollection };
+const getByUser: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = Number.parseInt(req.params.id);
+    const collections = await collectionRepository.selectByUser(userId);
+    res.json(collections);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { browse, read, edit, add, destroy, Validatecollection, getByUser };

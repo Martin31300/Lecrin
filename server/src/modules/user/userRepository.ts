@@ -65,6 +65,35 @@ async function updateById(user: Partial<User>, id: number) {
   return result;
 }
 
+async function selectArtworksByUser(userId: number) {
+  const [artworks] = await db_client.query<Rows>(
+    `SELECT artwork.id, artwork.name, artwork.photo, artwork.date_artwork, artwork.date_post,
+      artist.name AS artistName, user.name AS userName, user.photo AS userPhoto
+     FROM artwork
+     LEFT JOIN artist ON artwork.artist_id = artist.id
+     LEFT JOIN user ON artwork.user_id = user.id
+     WHERE artwork.user_id = ?
+     ORDER BY artwork.date_post DESC`,
+    [userId],
+  );
+  return artworks;
+}
+
+async function selectLikedArtworksByUser(userId: number) {
+  const [artworks] = await db_client.query<Rows>(
+    `SELECT artwork.id, artwork.name, artwork.photo, artwork.date_artwork, artwork.date_post,
+      artist.name AS artistName, user.name AS userName, user.photo AS userPhoto
+     FROM user_liked_artwork
+     JOIN artwork ON artwork.id = user_liked_artwork.artwork_id
+     LEFT JOIN artist ON artwork.artist_id = artist.id
+     LEFT JOIN user ON artwork.user_id = user.id
+     WHERE user_liked_artwork.user_id = ?
+     ORDER BY artwork.date_post DESC`,
+    [userId],
+  );
+  return artworks;
+}
+
 export default {
   selectAll,
   selectOne,
@@ -72,4 +101,6 @@ export default {
   readByEmail,
   deleteById,
   updateById,
+  selectArtworksByUser,
+  selectLikedArtworksByUser
 };

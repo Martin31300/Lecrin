@@ -44,4 +44,18 @@ async function updateById(id: number, collection: Partial<Collection>) {
   return result;
 }
 
-export default { selectAll, selectOne, create, deleteById, updateById };
+async function selectByUser(userId: number) {
+  const [collections] = await db_client.query<Rows>(
+    `SELECT collection.id, collection.name,
+      (SELECT photo FROM artwork 
+       JOIN collection_has_artwork ON artwork.id = collection_has_artwork.artwork_id 
+       WHERE collection_has_artwork.collection_id = collection.id 
+       LIMIT 1) AS cover_photo
+     FROM collection
+     WHERE collection.user_id = ?`,
+    [userId],
+  );
+  return collections;
+}
+
+export default { selectAll, selectOne, create, deleteById, updateById, selectByUser };

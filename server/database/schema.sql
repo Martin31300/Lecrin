@@ -654,6 +654,17 @@ CREATE TABLE IF NOT EXISTS `user_following_artist` (
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
+-- Table `user_following_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `user_following_user` (
+    `follower_id` INT NOT NULL,
+    `followed_id` INT NOT NULL,
+    PRIMARY KEY (`follower_id`, `followed_id`),
+    CONSTRAINT `fk_follower` FOREIGN KEY (`follower_id`) REFERENCES `user` (`id`),
+    CONSTRAINT `fk_followed` FOREIGN KEY (`followed_id`) REFERENCES `user` (`id`)
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
+
+-- -----------------------------------------------------
 -- Table `user_liked_artwork`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user_liked_artwork` (

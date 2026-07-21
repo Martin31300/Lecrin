@@ -7,6 +7,7 @@ import artistActions from "./modules/artist/artistActions";
 import movementActions from "./modules/mouvement/movementActions";
 import collectionActions from "./modules/collection/collectionActions";
 import userLikeArtworkAction from "./modules/user_like_artwork/userLikeArtworkAction";
+import userFollowActions from "./modules/user/userFollowActions";
 
 const router = express.Router();
 
@@ -19,6 +20,11 @@ router.post("/api/users", userActions.ValidateUser, userActions.create);
 router.post("/api/users/login", userActions.login);
 router.delete("/api/users/:id", userActions.isAuth, userActions.destroy);
 router.put("/api/users/:id", userActions.isAuth, userActions.edit);
+router.post("/api/users/:id/follow", userActions.isAuth, userFollowActions.follow);
+router.delete("/api/users/:id/follow", userActions.isAuth, userFollowActions.unfollow);
+router.get("/api/users/:id/follow", userFollowActions.checkFollow);
+router.get("/api/users/:id/artworks", userActions.getUserArtworks);
+router.get("/api/users/:id/likes", userActions.getUserLikes);
 
 /* ************************************************************************* */
 // ARTWORK
@@ -102,6 +108,7 @@ router.delete(
   userActions.isAuth,
   collectionActions.destroy,
 );
+router.get("/api/users/:id/collections", collectionActions.getByUser);
 
 /* ************************************************************************* */
 // COMMENTS

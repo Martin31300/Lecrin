@@ -149,7 +149,26 @@ const edit: RequestHandler = async (req, res, next) => {
     next(err);
   }
 };
-//faire une verif sur le le user qui modifie et le compte sur lequel il est co
+
+const getUserArtworks: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = Number.parseInt(req.params.id);
+    const artworks = await userRepository.selectArtworksByUser(userId);
+    res.json(artworks);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserLikes: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = Number.parseInt(req.params.id);
+    const artworks = await userRepository.selectLikedArtworksByUser(userId);
+    res.json(artworks);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export default {
   browse,
@@ -160,5 +179,7 @@ export default {
   ValidateUser,
   isAuth,
   isAdmin,
-  read
+  read,
+  getUserArtworks,
+  getUserLikes,
 };
