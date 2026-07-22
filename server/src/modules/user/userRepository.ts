@@ -8,7 +8,7 @@ export type User = {
   date_inscription: string;
   mail: string;
   password: string;
-  admin: string;
+  role: string;
   artist_id: string;
   photo?: string;
 };

@@ -73,7 +73,7 @@ const login: RequestHandler = async (req, res, next) => {
         res.status(422).json("L'identifiant ou le mot de passe est incorrect.");
       else {
         const token = jwt.sign(
-          { id: user.id, admin: user.admin },
+          { id: user.id, role: user.role },
           process.env.APP_SECRET as string,
         );
         const { password, ...userWithoutPassword } = user;
@@ -115,8 +115,8 @@ const isAuth: RequestHandler = async (
 };
 
 const isAdmin: RequestHandler = async (req, res, next) => {
-  const { admin } = req.body.user;
-  if (!admin) res.status(403).json("Vous n'avez pas les droits.");
+  const { role } = req.body.user;
+  if (role !== 'admin') res.status(403).json("Vous n'avez pas les droits.");
   else next();
 };
 

@@ -61,7 +61,7 @@ export type User = {
   mail: string;
   password: string;
   artworks?: Artwork[];
-  admin?: string;
+  role?: string;
   artist_id?: Artist;
   token: string;
 };

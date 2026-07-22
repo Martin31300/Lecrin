@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     `date_inscription` DATETIME NOT NULL DEFAULT NOW(),
     `mail` VARCHAR(255) NOT NULL,
     `password` VARCHAR(150) NOT NULL,
-    `admin` TINYINT(1) NOT NULL DEFAULT 0,
+    `role` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     `artist_id` INT NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `mail_UNIQUE` (`mail` ASC) VISIBLE,
