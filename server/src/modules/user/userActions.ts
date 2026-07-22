@@ -15,10 +15,10 @@ interface PayloadToken extends jwt.JwtPayload {
 
 const ValidateUser: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string().alphanum().min(1).max(255).required(),
+    name: Joi.string().min(1).max(255).required(),
     birthday: Joi.date().iso().less("now").required(),
     mail: Joi.string().email().required(),
-    password: Joi.string().alphanum().min(1).max(255).required(),
+    password: Joi.string().min(8).max(255).required(),
   });
 
   const result = schema.validate(req.body, { abortEarly: false });

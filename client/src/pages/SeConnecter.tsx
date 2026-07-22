@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../contexts/user.context";
 import { API_URL } from "../utils/api";
 import "./SeConnecter.css";
+import { Link } from "react-router";
 
 function SeConnecter() {
   const navigate = useNavigate();
@@ -70,6 +71,12 @@ function SeConnecter() {
           <button className="BtnReg" onClick={loginBtn} type="button">
             Se connecter
           </button>
+          <p className="labelRegister" style={{ textAlign: "center", marginTop: "12px" }}>
+            Pas encore de compte ?{" "}
+            <Link to="/register" style={{ color: "var(--white-color)" }}>
+              Créer un compte
+            </Link>
+          </p>
         </div>
       </article>
     </div>
