@@ -10,6 +10,7 @@ const client = mysql.createPool({
   user: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
+  connectionLimit: 4,
 });
 
 // Ready to export
