@@ -142,3 +142,68 @@
     gap: 30px;
   }
 }
+
+.menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+
+.menuBtn span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--white-color);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 260px;
+  background: var(--black-color);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 32px;
+  gap: 32px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar--open {
+  transform: translateX(0);
+}
+
+.sidebarClose {
+  background: none;
+  border: none;
+  color: var(--white-color);
+  font-size: 18px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.sidebar a {
+  color: var(--white-color);
+  font-family: var(--text-font);
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  opacity: 0.7;
+}

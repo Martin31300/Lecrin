@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import SeConnecter from "./pages/SeConnecter";
 import ProfileArt from "./pages/profileArt";
 import Settings from "./pages/Settings";
+import CollectionDetail from "./pages/CollectionDetail";
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      {
+        path: "/collection/:id",
+        element: <CollectionDetail />,
       },
     ],
   },

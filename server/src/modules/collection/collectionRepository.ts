@@ -22,7 +22,7 @@ async function selectOne(id: number) {
 
 async function create(newCollection: Omit<Collection, "id">) {
   const [result] = await db_client.query<Result>(
-    "INSERT INTO collection (name, photo, user_id) VALUES (?, ?)",
+    "INSERT INTO collection (name, photo, user_id) VALUES (?, ?, ?)",
     [newCollection.name, newCollection.photo, newCollection.user_id],
   );
   return result;
@@ -58,4 +58,31 @@ async function selectByUser(userId: number) {
   return collections;
 }
 
-export default { selectAll, selectOne, create, deleteById, updateById, selectByUser };
+async function selectArtworksByCollection(collectionId: number) {
+  const [rows] = await db_client.query<Rows>(
+    `SELECT a.id, a.name AS artworkName, a.photo, a.date_artwork,
+            a.description, a.musee, a.ville, a.pays, a.dimensions,
+            ar.name AS artistName, ar.id AS artist_id,
+            u.id AS userId, u.name AS userName, u.photo AS userPhoto,
+            a.date_post,
+            '[]' AS movements
+     FROM collection_has_artwork cha
+     JOIN artwork a ON cha.artwork_id = a.id
+     JOIN artist ar ON a.artist_id = ar.id
+     JOIN user u ON a.user_id = u.id
+     WHERE cha.collection_id = ?
+    ORDER BY cha.artwork_id DESC`,
+    [collectionId]
+  );
+  return rows;
+}
+
+async function addArtworkToCollection(collectionId: number, artworkId: number) {
+  const [result] = await db_client.query<Result>(
+    "INSERT IGNORE INTO collection_has_artwork (collection_id, artwork_id) VALUES (?, ?)",
+    [collectionId, artworkId]
+  );
+  return result;
+}
+
+export default { selectAll, selectOne, create, deleteById, updateById, selectByUser, selectArtworksByCollection, addArtworkToCollection };

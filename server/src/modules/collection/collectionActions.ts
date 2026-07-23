@@ -4,7 +4,9 @@ import collectionRepository from "./collectionRepository";
 
 const Validatecollection: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string().alphanum().required,
+    name: Joi.string().required(),
+    photo: Joi.string().required(),
+    user_id: Joi.number().required(),
   });
 
   const result = schema.validate(req.body, { abortEarly: false });
@@ -89,4 +91,25 @@ const getByUser: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, edit, add, destroy, Validatecollection, getByUser };
+const getArtworks: RequestHandler = async (req, res, next) => {
+  try {
+    const id = Number.parseInt(req.params.id);
+    const artworks = await collectionRepository.selectArtworksByCollection(id);
+    res.json(artworks);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addArtwork: RequestHandler = async (req, res, next) => {
+  try {
+    const collectionId = Number.parseInt(req.params.id);
+    const { artwork_id } = req.body;
+    await collectionRepository.addArtworkToCollection(collectionId, artwork_id);
+    res.sendStatus(201);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { browse, read, edit, add, destroy, Validatecollection, getByUser, getArtworks, addArtwork };

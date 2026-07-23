@@ -34,4 +34,15 @@ const checkFollow: RequestHandler = async (req, res, next) => {
     }
 };
 
-export default { follow, unfollow, checkFollow };
+const getCounts: RequestHandler = async (req, res, next) => {
+    try {
+        const userId = Number.parseInt(req.params.id);
+        const followers = await userFollowRepository.getFollowerCount(userId);
+        const following = await userFollowRepository.getFollowingCount(userId);
+        res.json({ followers, following });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export default { follow, unfollow, checkFollow, getCounts };

@@ -53,6 +53,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
       <PopUpCollection
         artworkId={artwork.id}
         artworkImage={artwork.photo}
+        artworkName={artwork.artworkName}
         onClose={closePopUpSave}
         popUpIsOpen={popUpIsOpen}
       />

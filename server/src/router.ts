@@ -25,6 +25,7 @@ router.delete("/api/users/:id/follow", userActions.isAuth, userFollowActions.unf
 router.get("/api/users/:id/follow", userFollowActions.checkFollow);
 router.get("/api/users/:id/artworks", userActions.getUserArtworks);
 router.get("/api/users/:id/likes", userActions.getUserLikes);
+router.get("/api/users/:id/follow/counts", userFollowActions.getCounts);
 
 /* ************************************************************************* */
 // ARTWORK
@@ -109,6 +110,8 @@ router.delete(
   collectionActions.destroy,
 );
 router.get("/api/users/:id/collections", collectionActions.getByUser);
+router.get("/api/collections/:id/artworks", collectionActions.getArtworks);
+router.post("/api/collections/:id/artworks", userActions.isAuth, collectionActions.addArtwork);
 
 /* ************************************************************************* */
 // COMMENTS

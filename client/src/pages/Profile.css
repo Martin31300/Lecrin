@@ -133,6 +133,63 @@
   border-bottom: 2px solid var(--white-color);
 }
 
+.collectionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 60px;
+}
+
+.collectionItem {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+}
+
+.collectionCover {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--white-color);
+}
+
+.collectionCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collectionCreate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--white-color);
+}
+
+.collectionName {
+  font-family: var(--text-font);
+  color: var(--white-color);
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.createCollectionModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  background: var(--black-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+}
+
 @media screen and (max-width: 768px) {
   .headerProfil {
     flex-direction: column;
