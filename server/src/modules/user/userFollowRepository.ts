@@ -26,19 +26,19 @@ async function isFollowing(followerId: number, followedId: number) {
 }
 
 async function getFollowerCount(userId: number) {
-    const [[row]] = await db_client.query<Rows>(
+    const [rows] = await db_client.query<Rows>(
         "SELECT COUNT(*) as count FROM user_following_user WHERE followed_id = ?",
         [userId],
     );
-    return row.count;
+    return rows[0].count;
 }
 
 async function getFollowingCount(userId: number) {
-    const [[row]] = await db_client.query<Rows>(
+    const [rows] = await db_client.query<Rows>(
         "SELECT COUNT(*) as count FROM user_following_user WHERE follower_id = ?",
         [userId],
     );
-    return row.count;
+    return rows[0].count;
 }
 
 export default { follow, unfollow, isFollowing, getFollowerCount, getFollowingCount };
