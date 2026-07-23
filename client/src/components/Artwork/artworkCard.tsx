@@ -1,5 +1,4 @@
-// artworkCard.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PictoComment from "../../assets/images/pictos/picto-comment.svg";
 import PictoSave from "../../assets/images/pictos/picto-save.svg";
@@ -11,34 +10,33 @@ import "./artworkCard.css";
 import AuthModal from "../Modal/AuthModal";
 import { useLike } from "../../hooks/useLike";
 import { Heart } from "lucide-react";
-
+import { API_URL } from "../../utils/api";
 
 type ArtworkCardProps = {
   artwork: Artwork;
 };
 
 function ArtworkCard({ artwork }: ArtworkCardProps) {
-
   const [comIsOpen, setComIsOpen] = useState(false);
   const [popUpIsOpen, setPopUpIsOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const { user } = useUser();
-  const { likeCount, isLiked, toggleLike } = useLike(artwork.id)
+  const { likeCount, isLiked, toggleLike } = useLike(artwork.id);
 
-  function openCom() {
-    setComIsOpen(true);
-  }
+  useEffect(() => {
+    fetch(`${API_URL}/api/artworks/${artwork.id}/comments`)
+      .then((res) => res.json())
+      .then((data) => { if (Array.isArray(data)) setCommentCount(data.length); });
+  }, [artwork.id]);
+
+  function openCom() { setComIsOpen(true); }
 
   function closeCom() {
     setComIsOpen(false);
-  }
-
-  function openPopUpSave() {
-    setPopUpIsOpen(true);
-  }
-
-  function closePopUpSave() {
-    setPopUpIsOpen(false);
+    fetch(`${API_URL}/api/artworks/${artwork.id}/comments`)
+      .then((res) => res.json())
+      .then((data) => { if (Array.isArray(data)) setCommentCount(data.length); });
   }
 
   return (
@@ -54,7 +52,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
         artworkId={artwork.id}
         artworkImage={artwork.photo}
         artworkName={artwork.artworkName}
-        onClose={closePopUpSave}
+        onClose={() => setPopUpIsOpen(false)}
         popUpIsOpen={popUpIsOpen}
       />
       <main key={artwork.id} className="sectionCard">
@@ -101,6 +99,7 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
                 >
                   <img src={PictoComment} alt="" />
                 </button>
+                <p className="textPicto">{commentCount}</p>
               </div>
             </div>
           </div>
@@ -132,11 +131,8 @@ function ArtworkCard({ artwork }: ArtworkCardProps) {
               <button
                 className="saveArtwork"
                 onClick={() => {
-                  if (!user || !user.id) {
-                    setAuthModalOpen(true);
-                  } else {
-                    openPopUpSave();
-                  }
+                  if (!user || !user.id) setAuthModalOpen(true);
+                  else setPopUpIsOpen(true);
                 }}
                 type="button"
               >

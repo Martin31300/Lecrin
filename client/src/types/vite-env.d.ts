@@ -70,9 +70,7 @@ export type Comment = {
   id: number;
   text: string;
   date: string;
-  artwork: Artwork;
-  artist: Artist;
-  userId: User;
+  user_id: number;
   userName: string;
   userPic: string;
 };

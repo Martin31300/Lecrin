@@ -52,6 +52,7 @@ async function selectCommentByArtworkId(artworkId: number) {
       comment.id, 
       comment.text, 
       comment.date, 
+      comment.user_id,
       user.name AS userName, 
       user.photo AS userPic 
     FROM comment 
