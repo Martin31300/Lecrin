@@ -72,6 +72,11 @@ function SeConnecter() {
             Se connecter
           </button>
           <p className="labelRegister" style={{ textAlign: "center", marginTop: "12px" }}>
+            <Link to="/forgot-password" style={{ color: "var(--white-color)" }}>
+              Mot de passe oublié ?
+            </Link>
+          </p>
+          <p className="labelRegister" style={{ textAlign: "center", marginTop: "12px" }}>
             Pas encore de compte ?{" "}
             <Link to="/register" style={{ color: "var(--white-color)" }}>
               Créer un compte

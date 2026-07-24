@@ -13,6 +13,8 @@ import SeConnecter from "./pages/SeConnecter";
 import ProfileArt from "./pages/profileArt";
 import Settings from "./pages/Settings";
 import CollectionDetail from "./pages/CollectionDetail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
@@ -71,6 +73,14 @@ export const router = createBrowserRouter([
       {
         path: "/collection/:id",
         element: <CollectionDetail />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
     ],
   },

@@ -53,10 +53,17 @@ const create: RequestHandler = async (req, res, next) => {
   try {
     const user = req.body;
     user.password = await argon.hash(user.password);
-    const affectedRows = await userRepository.add(user);
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted user
-    if (affectedRows) res.sendStatus(201);
-    else res.sendStatus(422);
+    try {
+      const affectedRows = await userRepository.add(user);
+      if (affectedRows) res.sendStatus(201);
+      else res.sendStatus(422);
+    } catch (err: any) {
+      if (err.code === "ER_DUP_ENTRY") {
+        res.status(409).json({ message: "Cette adresse email est déjà utilisée." });
+      } else {
+        next(err);
+      }
+    }
   } catch (err) {
     next(err);
   }

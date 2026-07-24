@@ -8,6 +8,7 @@ import movementActions from "./modules/mouvement/movementActions";
 import collectionActions from "./modules/collection/collectionActions";
 import userLikeArtworkAction from "./modules/user_like_artwork/userLikeArtworkAction";
 import userFollowActions from "./modules/user/userFollowActions";
+import authActions from "./modules/auth/authActions";
 
 const router = express.Router();
 
@@ -26,6 +27,28 @@ router.get("/api/users/:id/follow", userFollowActions.checkFollow);
 router.get("/api/users/:id/artworks", userActions.getUserArtworks);
 router.get("/api/users/:id/likes", userActions.getUserLikes);
 router.get("/api/users/:id/follow/counts", userFollowActions.getCounts);
+
+/* ************************************************************************* */
+// USER LIKES
+/* ************************************************************************* */
+router.get("/api/artworks/:id/like", userLikeArtworkAction.read);
+router.get("/api/user/:id/likes", userLikeArtworkAction.readAllByUser);
+router.post(
+  "/api/artworks/like",
+  userActions.isAuth,
+  userLikeArtworkAction.add,
+);
+router.delete(
+  "/api/artworks/:id/like",
+  userActions.isAuth,
+  userLikeArtworkAction.destroy,
+);
+
+/* ************************************************************************* */
+// AUTH
+/* ************************************************************************* */
+router.post("/api/auth/forgot-password", authActions.forgotPassword);
+router.post("/api/auth/reset-password", authActions.resetPassword);
 
 /* ************************************************************************* */
 // ARTWORK
@@ -126,21 +149,5 @@ router.post(
   commentActions.add,
 );
 router.delete("/api/comments/:id", userActions.isAuth, commentActions.destroy);
-
-/* ************************************************************************* */
-// USER LIKES
-/* ************************************************************************* */
-router.get("/api/artworks/:id/like", userLikeArtworkAction.read);
-router.get("/api/user/:id/likes", userLikeArtworkAction.readAllByUser);
-router.post(
-  "/api/artworks/like",
-  userActions.isAuth,
-  userLikeArtworkAction.add,
-);
-router.delete(
-  "/api/artworks/:id/like",
-  userActions.isAuth,
-  userLikeArtworkAction.destroy,
-);
 
 export default router;

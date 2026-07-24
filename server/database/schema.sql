@@ -704,6 +704,18 @@ CREATE TABLE IF NOT EXISTS `collection_has_artwork` (
     CONSTRAINT `fk_collection_has_artwork_artwork1` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
 
+-- -----------------------------------------------------
+-- Table `password_reset_tokens`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `token` VARCHAR(255) NOT NULL,
+    `expires_at` DATETIME NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_reset_token_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb3;
+
 SET SQL_MODE = @OLD_SQL_MODE;
 
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
