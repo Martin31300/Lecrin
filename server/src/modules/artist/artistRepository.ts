@@ -15,6 +15,7 @@ async function selectAll() {
         artist.id, 
         artist.name AS artistName, 
         artist.photo, 
+        artist.pays,
         artist.birthday, 
         artist.death_date, 
         (SELECT COUNT(*) FROM artwork WHERE artwork.artist_id = artist.id) AS artworkCount,
