@@ -15,14 +15,14 @@ type UserType = {
 
 type Artwork = {
     id: number;
-    name: string;
+    artworkName: string;
     photo: string;
     userName: string;
 };
 
 type Artist = {
     id: number;
-    name: string;
+    artistName: string;
     photo: string;
     pays: string;
 };
@@ -141,7 +141,7 @@ function Admin() {
                             {artworks.map(a => (
                                 <tr key={a.id}>
                                     <td><img src={a.photo} alt="" className="admin-avatar" /></td>
-                                    <td>{a.name}</td>
+                                    <td>{a.artworkName}</td>
                                     <td>{a.userName}</td>
                                     <td>
                                         <button type="button" className="admin-delete-btn" onClick={() => deleteArtwork(a.id)}>
@@ -161,7 +161,7 @@ function Admin() {
                             {artists.map(a => (
                                 <tr key={a.id}>
                                     <td><img src={a.photo} alt="" className="admin-avatar" /></td>
-                                    <td>{a.name}</td>
+                                    <td>{a.artistName}</td>
                                     <td>{a.pays}</td>
                                     <td>
                                         <button type="button" className="admin-delete-btn" onClick={() => deleteArtist(a.id)}>
