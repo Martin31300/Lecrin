@@ -29,6 +29,10 @@ function ProfilUser() {
     fetch(`${API_URL}/api/users/${id}/artworks`)
       .then((res) => res.json())
       .then((data) => setArtworks(data));
+
+    fetch(`${API_URL}/api/users/${id}/follow/counts`)
+      .then((res) => res.json())
+      .then((data) => setFollowerCount(Number(data.followers)));
   }, [id]);
 
   useEffect(() => {
@@ -78,7 +82,7 @@ function ProfilUser() {
           <div>
             <div className="divNomBadge">
               <h1 className="nomProfil">{profileUser.name}</h1>
-              {profileUser.role ? <p className="badge">Administrateur</p> : null}
+              {profileUser.role === "admin" ? <p className="badge">Administrateur</p> : null}
             </div>
             <button type="button" className="editBtn" onClick={toggleFollow}>
               {isFollowing ? "Se désabonner" : "S'abonner"}
