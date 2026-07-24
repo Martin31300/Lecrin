@@ -43,6 +43,9 @@ function Nav() {
 
       <div className={`sidebar ${isOpen ? "sidebar--open" : ""}`}>
         <button type="button" className="sidebarClose" onClick={() => setIsOpen(false)}>✕</button>
+        {user?.role === "admin" && (
+          <Link to="/admin" onClick={() => setIsOpen(false)}>Back Office</Link>
+        )}
         <Link to="/settings" onClick={() => setIsOpen(false)}>Paramètres</Link>
         <button type="button" className="logoutBtn" onClick={logout}>Déconnexion</button>
       </div>
