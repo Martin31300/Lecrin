@@ -97,8 +97,8 @@ function Admin() {
 
     const allowedFields: Record<string, string[]> = {
         users: ["name", "mail", "photo"],
-        artworks: ["name", "photo", "description", "musee", "ville", "pays", "dimensions", "date_artwork"],
-        artists: ["name", "photo", "pays", "birthday", "death_date"],
+        artworks: ["artworkName", "photo", "description", "musee", "ville", "pays", "dimensions", "date_artwork"],
+        artists: ["artistName", "photo", "pays", "birthday", "death_date"],
         movements: ["name", "photo"],
     };
 
