@@ -121,8 +121,8 @@ const isAuth: RequestHandler = async (
   }
 };
 
-const isAdmin: RequestHandler = async (req, res, next) => {
-  const { role } = req.body.user;
+const isAdmin: RequestHandler = async (req: AuthenticationRequest, res, next) => {
+  const { role } = req.user as User;
   if (role !== 'admin') res.status(403).json("Vous n'avez pas les droits.");
   else next();
 };
