@@ -76,3 +76,73 @@
   border-color: rgb(255, 80, 80);
   color: rgb(255, 80, 80);
 }
+
+.admin-edit-btn {
+    background: transparent;
+    border: 1px solid var(--white-color);
+    color: var(--white-color);
+    padding: 4px 10px;
+    cursor: pointer;
+    margin-right: 8px;
+    font-family: var(--text-font);
+}
+
+.admin-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.admin-modal {
+    background: #111;
+    border: 1px solid var(--white-color);
+    padding: 32px;
+    min-width: 400px;
+    max-width: 600px;
+    width: 90%;
+}
+
+.admin-modal h2 {
+    margin-bottom: 24px;
+    font-family: var(--text-font);
+}
+
+.admin-modal-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.admin-modal-field label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    opacity: 0.6;
+    font-family: var(--text-font);
+}
+
+.admin-modal-field input {
+    background: transparent;
+    border: 1px solid var(--white-color);
+    color: var(--white-color);
+    padding: 8px;
+    font-family: var(--text-font);
+}
+
+.admin-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.admin-modal-actions button {
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: var(--text-font);
+    border: 1px solid var(--white-color);
+    background: transparent;
+    color: var(--white-color);
+}
