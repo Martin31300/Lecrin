@@ -43,6 +43,8 @@ function Admin() {
     const [movements, setMovements] = useState<Movement[]>([]);
     const [editingItem, setEditingItem] = useState<{ type: string; item: any } | null>(null);
     const [editForm, setEditForm] = useState<any>({});
+    const [editMovementDropdownOpen, setEditMovementDropdownOpen] = useState(false);
+    const [editSelectedMovements, setEditSelectedMovements] = useState<number[]>([]);
 
     useEffect(() => {
         if (!user || user.role !== "admin") navigate("/");
@@ -103,6 +105,13 @@ function Admin() {
     const openEdit = (type: string, item: any) => {
         setEditingItem({ type, item });
         setEditForm({ ...item });
+        setEditSelectedMovements(item.movements?.map((m: any) => m.id) ?? []);
+    };
+
+    const toggleEditMovement = (id: number) => {
+        setEditSelectedMovements(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
     };
 
     const saveEdit = async () => {
@@ -235,13 +244,37 @@ function Admin() {
                 <div className="admin-modal-overlay" onClick={() => setEditingItem(null)}>
                     <div className="admin-modal" onClick={e => e.stopPropagation()}>
                         <h2>Modifier</h2>
-                        {Object.keys(editForm).filter(k => allowedFields[editingItem.type]?.includes(k)).map(key => (
+                        {Object.keys(editForm).filter(k => k !== "id").map(key => (
                             <div key={key} className="admin-modal-field">
                                 <label>{key}</label>
-                                <input
-                                    value={editForm[key] ?? ""}
-                                    onChange={e => setEditForm((prev: any) => ({ ...prev, [key]: e.target.value }))}
-                                />
+                                {key === "movements" ? (
+                                    <div className="movements-dropdown">
+                                        <div className="movements-selected" onClick={() => setEditMovementDropdownOpen(prev => !prev)}>
+                                            {editSelectedMovements.length === 0
+                                                ? "Sélectionner des mouvements"
+                                                : movements.filter(m => editSelectedMovements.includes(m.id)).map(m => m.name).join(", ")}
+                                        </div>
+                                        {editMovementDropdownOpen && (
+                                            <div className="movements-list">
+                                                {movements.map(m => (
+                                                    <div
+                                                        key={m.id}
+                                                        className={`movements-option ${editSelectedMovements.includes(m.id) ? "selected" : ""}`}
+                                                        onClick={() => toggleEditMovement(m.id)}
+                                                    >
+                                                        {m.name}
+                                                    </div>
+                                                ))}
+                                                <button type="button" className="movements-validate" onClick={() => setEditMovementDropdownOpen(false)}>Valider</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <input
+                                        value={editForm[key] ?? ""}
+                                        onChange={e => setEditForm((prev: any) => ({ ...prev, [key]: e.target.value }))}
+                                    />
+                                )}
                             </div>
                         ))}
                         <div className="admin-modal-actions">
