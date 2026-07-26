@@ -3,6 +3,7 @@ import Joi from "joi";
 import movementRepository from "../mouvement/movementRepository";
 import artworkRepository from "./artworkRepository";
 import artistRepository from "../artist/artistRepository";
+import client from "../../../database/client";
 
 const ValidateArtwork: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
@@ -106,8 +107,16 @@ const destroy: RequestHandler = async (req, res, next) => {
 const edit: RequestHandler = async (req, res, next) => {
   try {
     const parseId = Number.parseInt(req.params.id);
-    const artwork = req.body;
+    const { movement_ids, artworkName, ...rest } = req.body;
+    const artwork = artworkName !== undefined ? { ...rest, name: artworkName } : rest;
     const result = await artworkRepository.updateById(parseId, artwork);
+
+    if (movement_ids !== undefined) {
+      await client.query("DELETE FROM movement_has_artwork WHERE artwork_id = ?", [parseId]);
+      if (movement_ids.length > 0) {
+        await artworkRepository.insertMovements(parseId, movement_ids);
+      }
+    }
 
     if (result.affectedRows > 0) {
       res.sendStatus(204);

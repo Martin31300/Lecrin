@@ -126,13 +126,17 @@ function Admin() {
         const filtered = Object.fromEntries(
             Object.entries(editForm).filter(([k]) => allowedFields[type]?.includes(k))
         );
+        const payload: any = { ...filtered };
+        if (type === "artworks" || type === "artists") {
+            payload.movement_ids = editSelectedMovements;
+        }
         await fetch(`${API_URL}/api/${routes[type]}/${item.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user?.token}`,
             },
-            body: JSON.stringify(filtered),
+            body: JSON.stringify(payload),
         });
         if (type === "users") setUsers(prev => prev.map(u => u.id === item.id ? { ...u, ...editForm } : u));
         if (type === "artworks") setArtworks(prev => prev.map(a => a.id === item.id ? { ...a, ...editForm } : a));
