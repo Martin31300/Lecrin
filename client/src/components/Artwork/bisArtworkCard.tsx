@@ -43,8 +43,8 @@ function BisArtworkCard({ artwork, artist }: ArtworkCardProps) {
       >
         <div
           className="divUserCard"
-          onClick={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId ?? artwork.user_id}`); }}
-          onKeyDown={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId ?? artwork.user_id}`); }}
+          onClick={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId || artwork.user_id}`); }}
+          onKeyDown={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId || artwork.user_id}`); }}
           role="link"
           style={{ cursor: "pointer" }}
         >
