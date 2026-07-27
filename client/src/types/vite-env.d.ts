@@ -35,6 +35,7 @@ export type Artwork = {
   artist_id: number;
   movement_id: number;
   userId: number;
+  user_id?: number;
   photo: string;
   date_post: number;
   date_artwork: string;
