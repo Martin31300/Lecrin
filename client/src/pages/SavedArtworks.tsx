@@ -1,44 +1,36 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../utils/api";
+import { useUser } from "../contexts/user.context";
+import { useNavigate } from "react-router-dom";
 import ListArtistBisArtworkCard from "../components/Artwork/ListBisArtwork";
 import type { Artwork } from "../types/vite-env";
 import "./Profile.css";
 
-type CollectionInfo = {
-    id: number;
-    name: string;
-    photo: string;
-};
-
-function CollectionDetail() {
-    const { id } = useParams();
+function SavedArtworks() {
+    const { user } = useUser();
     const navigate = useNavigate();
-    const [collection, setCollection] = useState<CollectionInfo | null>(null);
     const [artworks, setArtworks] = useState<Artwork[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/collections/${id}`)
+        if (!user?.id) return;
+        fetch(`${API_URL}/api/users/${user.id}/saved`)
             .then((res) => res.json())
-            .then((data) => setCollection(data));
+            .then((data) => { setArtworks(data); setLoading(false); });
+    }, [user?.id]);
 
-        fetch(`${API_URL}/api/collections/${id}/artworks`)
-            .then((res) => res.json())
-            .then((data) => setArtworks(data));
-    }, [id]);
-
-    if (!collection) return <p className="msgErr">Chargement...</p>;
+    if (loading) return <p className="msgErr">Chargement...</p>;
 
     return (
         <main>
             <header className="headerProfil">
                 <button type="button" onClick={() => navigate(-1)} style={{ background: "none", border: "none", color: "var(--white-color)", fontFamily: "var(--text-font)", fontSize: "16px", cursor: "pointer", width: "80px" }}>Retour</button>
-            <h1 className="nomProfil">{collection.name}</h1>
+            <h1 className="nomProfil">Tous les enregistrements</h1>
             <div style={{ width: "80px" }} />
             </header>
             <section>
                 {artworks.length === 0 ? (
-                    <p className="greyProfil">Aucune œuvre dans cette collection.</p>
+                    <p className="greyProfil">Aucune œuvre enregistrée.</p>
                 ) : (
                     <ListArtistBisArtworkCard artworks={artworks} />
                 )}
@@ -47,4 +39,4 @@ function CollectionDetail() {
     );
 }
 
-export default CollectionDetail;
+export default SavedArtworks;

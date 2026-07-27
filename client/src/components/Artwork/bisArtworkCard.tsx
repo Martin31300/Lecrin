@@ -41,7 +41,13 @@ function BisArtworkCard({ artwork, artist }: ArtworkCardProps) {
         onKeyDown={() => navigate(`/ProfilArtwork/${artwork.id}`)}
         role="presentation"
       >
-        <div className="divUserCard">
+        <div
+          className="divUserCard"
+          onClick={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId ?? artwork.user_id}`); }}
+          onKeyDown={(e) => { e.stopPropagation(); navigate(`/profiluser/${artwork.userId ?? artwork.user_id}`); }}
+          role="link"
+          style={{ cursor: "pointer" }}
+        >
           <div className="divImgUserCard">
             <img
               className="imgUserCard"

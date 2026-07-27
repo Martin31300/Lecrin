@@ -1,34 +1,35 @@
+import { useState, useEffect } from "react";
 import type { Artwork } from "../../types/vite-env";
 import BisArtworkCard from "./bisArtworkCard";
 
 function ListArtistBisArtworkCard({ artworks }: { artworks: Artwork[] }) {
-  const col1: Artwork[] = [];
-  const col2: Artwork[] = [];
-  const col3: Artwork[] = [];
+  const [cols, setCols] = useState(3);
 
+  useEffect(() => {
+    function update() {
+      if (window.innerWidth <= 768) setCols(1);
+      else if (window.innerWidth <= 1280) setCols(2);
+      else setCols(3);
+    }
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const columns: Artwork[][] = Array.from({ length: cols }, () => []);
   artworks.forEach((artwork, index) => {
-    if (index % 3 === 0) col1.push(artwork);
-    else if (index % 3 === 1) col2.push(artwork);
-    else col3.push(artwork);
+    columns[index % cols].push(artwork);
   });
 
   return (
     <div className="divListBisArt">
-      <div className="colBisArt">
-        {col1.map((artwork) => (
-          <BisArtworkCard key={artwork.id} artwork={artwork} artist={artwork.artistName} />
-        ))}
-      </div>
-      <div className="colBisArt">
-        {col2.map((artwork) => (
-          <BisArtworkCard key={artwork.id} artwork={artwork} artist={artwork.artistName} />
-        ))}
-      </div>
-      <div className="colBisArt">
-        {col3.map((artwork) => (
-          <BisArtworkCard key={artwork.id} artwork={artwork} artist={artwork.artistName} />
-        ))}
-      </div>
+      {columns.map((col, i) => (
+        <div key={i} className="colBisArt">
+          {col.map((artwork) => (
+            <BisArtworkCard key={artwork.id} artwork={artwork} artist={artwork.artistName} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

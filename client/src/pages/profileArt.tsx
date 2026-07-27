@@ -4,15 +4,28 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../utils/api";
 import PictoComment from "../assets/images/pictos/picto-comment.svg";
-import PictoLike from "../assets/images/pictos/picto-like.svg";
 import PictoSave from "../assets/images/pictos/picto-save.svg";
 import type { Artwork, Movement } from "../types/vite-env";
+import { useUser } from "../contexts/user.context";
+import CommentList from "../components/Comment/CommentList";
+import PopUpCollection from "../components/Collection/PopUpCollection";
+import AuthModal from "../components/Modal/AuthModal";
+import { useLike } from "../hooks/useLike";
+import { Heart } from "lucide-react";
+import ListArtistBisArtworkCard from "../components/Artwork/ListBisArtwork";
 
 function ProfileArt() {
   const { id } = useParams();
 
   const [artwork, setArtwork] = useState<Artwork>();
   const [loading, setLoading] = useState(true);
+  const [comIsOpen, setComIsOpen] = useState(false);
+  const [popUpIsOpen, setPopUpIsOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
+  const [relatedArtworks, setRelatedArtworks] = useState<Artwork[]>([]);
+  const { user } = useUser();
+  const { likeCount, isLiked, toggleLike } = useLike(Number(id));
 
   useEffect(() => {
     fetch(`${API_URL}/api/artworks/${id}`)
@@ -27,6 +40,24 @@ function ProfileArt() {
       });
   }, [id]);
 
+  useEffect(() => {
+    if (!id) return;
+    fetch(`${API_URL}/api/artworks/${id}/comments`)
+      .then((res) => res.json())
+      .then((data) => { if (Array.isArray(data)) setCommentCount(data.length); });
+  }, [id]);
+
+  useEffect(() => {
+    if (!artwork?.movements?.length) return;
+    const mvtId = artwork.movements[0].id;
+    fetch(`${API_URL}/api/movements/${mvtId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const others = (data.artworks ?? []).filter((a: Artwork) => a.id !== artwork.id);
+        setRelatedArtworks(others);
+      });
+  }, [artwork]);
+
   if (loading) return <p className="msgErr">Le tableau arrive !</p>;
   if (!artwork || !artwork.userName) {
     // Protection pour éviter erreur si artwork ou user_id manquant
@@ -37,18 +68,39 @@ function ProfileArt() {
 
   return (
     <main className="sectionCard">
-      <div className="divUser">
-        <div className="divImgUser">
-          <img
-            className="imgUser"
-            src="https://i.pinimg.com/originals/54/72/d1/5472d1b09d3d724228109d381d617326.jpg"
-            alt={`Avatar de l'utilisateur ${artwork.userName}`}
-          />
+      {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
+      <CommentList
+        artworkId={Number(id)}
+        artworkImage={artwork.photo}
+        onClose={() => {
+          setComIsOpen(false);
+          fetch(`${API_URL}/api/artworks/${id}/comments`)
+            .then((res) => res.json())
+            .then((data) => { if (Array.isArray(data)) setCommentCount(data.length); });
+        }}
+        comIsOpen={comIsOpen}
+      />
+      <PopUpCollection
+        artworkId={Number(id)}
+        artworkImage={artwork.photo}
+        artworkName={artwork.artworkName}
+        onClose={() => setPopUpIsOpen(false)}
+        popUpIsOpen={popUpIsOpen}
+      />
+      <Link className="LinkToArtistProf" to={`/profiluser/${artwork.userId}`}>
+        <div className="divUser">
+          <div className="divImgUser">
+            <img
+              className="imgUser"
+              src={artwork.userPhoto}
+              alt={`Avatar de l'utilisateur ${artwork.userName}`}
+            />
+          </div>
+          <p className="textPetit">
+            <span className="spanUser">{artwork.userName}</span> a publié
+          </p>
         </div>
-        <p className="textPetit">
-          <span className="spanUser">{artwork.userName}</span> a publié
-        </p>
-      </div>
+      </Link>
 
       <section className="divCard">
         <div className="divImg">
@@ -56,17 +108,21 @@ function ProfileArt() {
 
           <div className="divInfoCard">
             <p className="datePost">
-              {new Date(artwork.date_artwork).toLocaleDateString()}
+              {new Date(artwork.date_post).toLocaleDateString()}
             </p>
 
             <div className="divLike">
-              <img className="pictoLike" src={PictoLike} alt="" />
-              <p className="textPicto">28</p>
+              <button type="button" className="btnLike" onClick={() => { if (!user?.id) setAuthModalOpen(true); else toggleLike(); }}>
+                <Heart size={20} fill={isLiked ? "white" : "none"} stroke="white" />
+              </button>
+              <p className="textPicto">{likeCount}</p>
             </div>
 
             <div className="divLike">
-              <img className="pictoComment" src={PictoComment} alt="" />
-              <p className="textPicto">4</p>
+              <button type="button" className="btnLike" onClick={() => setComIsOpen(true)}>
+                <img src={PictoComment} alt="" />
+              </button>
+              <p className="textPicto">{commentCount}</p>
             </div>
           </div>
         </div>
@@ -75,7 +131,9 @@ function ProfileArt() {
           <div className="firstDivCard">
             <h1 className="titreArtwork">{artwork.artworkName}</h1>
             <h2 className="titreArtist">
-              {artwork.artistName} -{" "}
+              <Link className="LinkToArtistProf" to={`/artist/${artwork.artist_id}`}>
+                {artwork.artistName}
+              </Link>{" "}-{" "}
               {new Date(artwork.date_artwork).getFullYear()}
             </h2>
             {artwork.musee && artwork.ville && artwork.pays ? (
@@ -94,10 +152,10 @@ function ProfileArt() {
               ))}
             </div>
 
-            <div className="saveArtwork">
+            <button className="saveArtwork" type="button" onClick={() => { if (!user?.id) setAuthModalOpen(true); else setPopUpIsOpen(true); }}>
               <img className="pictoSave" src={PictoSave} alt="" />
               <p className="infoArtwork">enregistrer</p>
-            </div>
+            </button>
           </div>
 
           <div className="divDescArtwork">
@@ -106,6 +164,13 @@ function ProfileArt() {
           </div>
         </article>
       </section>
+
+      {relatedArtworks.length > 0 && (
+        <section className="ProfilArtistCardList">
+          <h1 className="oeuvresAssociées">Oeuvres Associées</h1>
+          <ListArtistBisArtworkCard artworks={relatedArtworks} />
+        </section>
+      )}
     </main>
   );
 }

@@ -45,7 +45,7 @@ function Settings() {
 
     return (
         <main>
-            <div className="auth-modal-card large" style={{ margin: "60px auto" }}>
+            <div className="auth-modal-card large" style={{ margin: "60px auto", width: "100%" }}>
                 <h2>Éditer le profil</h2>
 
                 <div className="divTruc">

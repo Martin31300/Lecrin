@@ -40,6 +40,7 @@
 .navigation {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .navigation a {
@@ -99,6 +100,25 @@
   transform: translateY(-2px);
 }
 
+.navMapBtn {
+  margin-right: 20px !important;
+  padding: 4px 12px;
+  border: 1px solid var(--white-color) !important;
+  line-height: normal;
+  vertical-align: middle;
+  transition: background-color 0.3s ease, color 0.3s ease !important;
+}
+
+.navMapBtn:hover {
+  background-color: var(--white-color) !important;
+  color: var(--black-color) !important;
+  transform: none !important;
+}
+
+.navMapBtn::before {
+  display: none !important;
+}
+
 .logoutBtn {
   background: none;
   border: none;
@@ -140,6 +160,23 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .navHideMobile {
+    display: none !important;
+  }
+
+  .navigation {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 421px) {
+  .sidebarMobileOnly {
+    display: none;
   }
 }
 

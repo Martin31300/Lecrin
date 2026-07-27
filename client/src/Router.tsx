@@ -16,6 +16,8 @@ import CollectionDetail from "./pages/CollectionDetail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
+import Map from "./pages/Map";
+import SavedArtworks from "./pages/SavedArtworks";
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
@@ -86,6 +88,14 @@ export const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
+      },
+      {
+        path: "/map",
+        element: <Map />,
+      },
+      {
+        path: "/saved",
+        element: <SavedArtworks />,
       },
     ],
   },

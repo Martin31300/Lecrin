@@ -190,6 +190,19 @@
   width: 400px;
 }
 
+.collectionCoverGrid {
+  display: grid;
+  grid-template-columns: 40px 40px;
+  grid-template-rows: 40px 40px;
+}
+
+.collectionCoverGrid img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  display: block;
+}
+
 @media screen and (max-width: 768px) {
   .headerProfil {
     flex-direction: column;
@@ -209,6 +222,42 @@
   }
 
   .navProfil {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 500px) {
+  .headerProfil {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .divAbonne {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .collectionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .collectionItem {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 940px) {
+  .headerProfil {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .divAbonne {
+    width: 100%;
     justify-content: space-between;
   }
 }

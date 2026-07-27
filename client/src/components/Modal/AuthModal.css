@@ -13,6 +13,7 @@
   border: 1px solid var(--white-color);
   padding: 2rem;
   width: 320px;
+  max-width: calc(100vw - 40px);
   text-align: center;
   position: relative;
   display: flex;
@@ -72,6 +73,7 @@
 
 .auth-modal-card.large {
   width: 600px;
+  max-width: calc(100vw - 40px);
   max-height: 85vh;
   overflow-y: auto;
 }

@@ -9,6 +9,7 @@ import collectionActions from "./modules/collection/collectionActions";
 import userLikeArtworkAction from "./modules/user_like_artwork/userLikeArtworkAction";
 import userFollowActions from "./modules/user/userFollowActions";
 import authActions from "./modules/auth/authActions";
+import eventsActions from "./modules/events/eventsActions";
 
 const router = express.Router();
 
@@ -135,6 +136,7 @@ router.delete(
 router.get("/api/users/:id/collections", collectionActions.getByUser);
 router.get("/api/collections/:id/artworks", collectionActions.getArtworks);
 router.post("/api/collections/:id/artworks", userActions.isAuth, collectionActions.addArtwork);
+router.get("/api/users/:id/saved", collectionActions.getAllSaved);
 
 /* ************************************************************************* */
 // COMMENTS
@@ -149,5 +151,10 @@ router.post(
   commentActions.add,
 );
 router.delete("/api/comments/:id", userActions.isAuth, commentActions.destroy);
+
+/* ************************************************************************* */
+// MAP
+/* ************************************************************************* */
+router.get("/api/events", eventsActions.getEvents);
 
 export default router;

@@ -11,7 +11,10 @@ import { toast } from "react-toastify"
 type Collection = {
   id: number;
   name: string;
-  cover_photo: string;
+  cover_photo_1: string;
+  cover_photo_2: string;
+  cover_photo_3: string;
+  cover_photo_4: string;
 };
 
 function Profil() {
@@ -26,6 +29,7 @@ function Profil() {
   const navigate = useNavigate();
   const nameRef = useRef<HTMLInputElement>(null);
   const photoRef = useRef<HTMLInputElement>(null);
+  const [savedCovers, setSavedCovers] = useState<string[]>([]);
 
   const createCollection = async () => {
     if (!user) return;
@@ -43,7 +47,7 @@ function Profil() {
     });
     if (response.ok) {
       const newCol = await response.json();
-      setCollections((prev) => [...prev, { id: newCol.insertId, name: nameRef.current?.value ?? "", cover_photo: photoRef.current?.value ?? "" }]);
+      setCollections((prev) => [...prev, { id: newCol.insertId, name: nameRef.current?.value ?? "", cover_photo_1: photoRef.current?.value ?? "", cover_photo_2: "", cover_photo_3: "", cover_photo_4: "" }]);
       setCreateCollectionOpen(false);
       toast.success("Collection créée !");
     }
@@ -60,6 +64,9 @@ function Profil() {
         setFollowerCount(data.followers);
         setFollowingCount(data.following);
       });
+    fetch(`${API_URL}/api/users/${user.id}/saved`)
+      .then((res) => res.json())
+      .then((data) => setSavedCovers(data.slice(0, 4).map((a: Artwork) => a.photo)));
   }, [user?.id]);
 
   useEffect(() => {
@@ -155,16 +162,34 @@ function Profil() {
                 </div>
                 <p className="collectionName">Créer une collection</p>
               </div>
-              <div className="collectionItem">
-                <div className="collectionCover">
-                  <img src={artworks[0]?.photo} alt="" />
+              <div className="collectionItem" onClick={() => navigate("/saved")}>
+                <div className={`collectionCover ${savedCovers.length >= 4 ? "collectionCoverGrid" : ""}`}>
+                  {savedCovers.length >= 4 ? (
+                    <>
+                      <img src={savedCovers[0]} alt="" />
+                      <img src={savedCovers[1]} alt="" />
+                      <img src={savedCovers[2]} alt="" />
+                      <img src={savedCovers[3]} alt="" />
+                    </>
+                  ) : (
+                    <img src={savedCovers[0]} alt="" />
+                  )}
                 </div>
                 <p className="collectionName">Tous les enregistrements</p>
               </div>
               {collections.map((col) => (
                 <div key={col.id} className="collectionItem" onClick={() => navigate(`/collection/${col.id}`)}>
-                  <div className="collectionCover">
-                    <img src={col.cover_photo} alt={col.name} />
+                  <div className={`collectionCover ${col.cover_photo_4 ? "collectionCoverGrid" : ""}`}>
+                    {col.cover_photo_4 ? (
+                      <>
+                        <img src={col.cover_photo_1} alt="" />
+                        <img src={col.cover_photo_2} alt="" />
+                        <img src={col.cover_photo_3} alt="" />
+                        <img src={col.cover_photo_4} alt="" />
+                      </>
+                    ) : (
+                      <img src={col.cover_photo_1} alt={col.name} />
+                    )}
                   </div>
                   <p className="collectionName">{col.name}</p>
                 </div>

@@ -112,4 +112,12 @@ const addArtwork: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, edit, add, destroy, Validatecollection, getByUser, getArtworks, addArtwork };
+const getAllSaved: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = Number.parseInt(req.params.id);
+    const artworks = await collectionRepository.selectAllSavedArtworksByUser(userId);
+    res.json(artworks);
+  } catch (error) { next(error); }
+};
+
+export default { browse, read, edit, add, destroy, Validatecollection, getByUser, getArtworks, addArtwork, getAllSaved };

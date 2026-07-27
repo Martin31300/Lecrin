@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "lucide-react": "^1.25.0",
+    "maplibre-gl": "^6.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-modal": "^3.16.3",

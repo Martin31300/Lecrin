@@ -50,7 +50,19 @@ async function selectByUser(userId: number) {
       (SELECT photo FROM artwork 
        JOIN collection_has_artwork ON artwork.id = collection_has_artwork.artwork_id 
        WHERE collection_has_artwork.collection_id = collection.id 
-       LIMIT 1) AS cover_photo
+       ORDER BY collection_has_artwork.artwork_id LIMIT 1 OFFSET 0) AS cover_photo_1,
+      (SELECT photo FROM artwork 
+       JOIN collection_has_artwork ON artwork.id = collection_has_artwork.artwork_id 
+       WHERE collection_has_artwork.collection_id = collection.id 
+       ORDER BY collection_has_artwork.artwork_id LIMIT 1 OFFSET 1) AS cover_photo_2,
+      (SELECT photo FROM artwork 
+       JOIN collection_has_artwork ON artwork.id = collection_has_artwork.artwork_id 
+       WHERE collection_has_artwork.collection_id = collection.id 
+       ORDER BY collection_has_artwork.artwork_id LIMIT 1 OFFSET 2) AS cover_photo_3,
+      (SELECT photo FROM artwork 
+       JOIN collection_has_artwork ON artwork.id = collection_has_artwork.artwork_id 
+       WHERE collection_has_artwork.collection_id = collection.id 
+       ORDER BY collection_has_artwork.artwork_id LIMIT 1 OFFSET 3) AS cover_photo_4
      FROM collection
      WHERE collection.user_id = ?`,
     [userId],
@@ -85,4 +97,23 @@ async function addArtworkToCollection(collectionId: number, artworkId: number) {
   return result;
 }
 
-export default { selectAll, selectOne, create, deleteById, updateById, selectByUser, selectArtworksByCollection, addArtworkToCollection };
+async function selectAllSavedArtworksByUser(userId: number) {
+  const [rows] = await db_client.query<Rows>(
+    `SELECT DISTINCT a.id, a.name AS artworkName, a.photo, a.date_artwork,
+            a.description, a.musee, a.ville, a.pays, a.dimensions,
+            ar.name AS artistName, ar.id AS artist_id,
+            u.id AS userId, u.name AS userName, u.photo AS userPhoto,
+            a.date_post, '[]' AS movements
+     FROM collection_has_artwork cha
+     JOIN collection c ON cha.collection_id = c.id
+     JOIN artwork a ON cha.artwork_id = a.id
+     JOIN artist ar ON a.artist_id = ar.id
+     JOIN user u ON a.user_id = u.id
+     WHERE c.user_id = ?
+     ORDER BY a.date_post DESC`,
+    [userId]
+  );
+  return rows;
+}
+
+export default { selectAll, selectOne, create, deleteById, updateById, selectByUser, selectArtworksByCollection, addArtworkToCollection, selectAllSavedArtworksByUser };

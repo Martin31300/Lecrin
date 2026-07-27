@@ -22,17 +22,18 @@ function Nav() {
           <h2>GALERIE D'ART</h2>
         </Link>
         <div className="navigation">
-          <Link to="/Artist">Artistes</Link>
-          <Link to="/Mouvements">Mouvements</Link>
+          <Link to="/map" className="navMapBtn">Carte</Link>
+          <Link to="/Artist" className="navHideMobile">Artistes</Link>
+          <Link to="/Mouvements" className="navHideMobile">Mouvements</Link>
           {user ? (
             <>
-              <Link to="/Profil">Profil</Link>
+              <Link to="/Profil" className="navHideMobile">Profil</Link>
               <button type="button" className="menuBtn" onClick={() => setIsOpen(true)}>
                 <span /><span /><span />
               </button>
             </>
           ) : (
-            <Link to="/login">Se connecter</Link>
+            <Link to="/login" className="navHideMobile">Se connecter</Link>
           )}
         </div>
       </nav>
@@ -43,6 +44,13 @@ function Nav() {
 
       <div className={`sidebar ${isOpen ? "sidebar--open" : ""}`}>
         <button type="button" className="sidebarClose" onClick={() => setIsOpen(false)}>✕</button>
+        <Link to="/Artist" className="sidebarMobileOnly" onClick={() => setIsOpen(false)}>Artistes</Link>
+        <Link to="/Mouvements" className="sidebarMobileOnly" onClick={() => setIsOpen(false)}>Mouvements</Link>
+        {user ? (
+          <Link to="/Profil" className="sidebarMobileOnly" onClick={() => setIsOpen(false)}>Profil</Link>
+        ) : (
+          <Link to="/login" className="sidebarMobileOnly" onClick={() => setIsOpen(false)}>Se connecter</Link>
+        )}
         {user?.role === "admin" && (
           <Link to="/admin" onClick={() => setIsOpen(false)}>Back Office</Link>
         )}

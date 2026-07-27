@@ -54,3 +54,16 @@
   font-family: var(--text-font);
   font-weight: 100;
 }
+
+@media (max-width: 600px) {
+  .desc-img {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .divImgMvt {
+    width: 100%;
+    height: 180px;
+  }
+}

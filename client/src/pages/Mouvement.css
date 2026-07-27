@@ -1,16 +1,12 @@
 .mouvement {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 50px;
-  width: 100%;
 }
 
 .sectionMouvementCard {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 20px 0px;
+  padding: 20px 0;
 }
 
 .pageMvt {
