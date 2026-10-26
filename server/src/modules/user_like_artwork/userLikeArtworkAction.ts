@@ -1,4 +1,6 @@
 import type { RequestHandler } from "express";
+import type { AuthenticationRequest } from "../user/userActions";
+import type { User } from "../user/userRepository";
 import userLikeArtworkRepository from "./userLikeArtworkRepository";
 
 const read: RequestHandler = async (req, res, next) => {
@@ -16,9 +18,18 @@ const read: RequestHandler = async (req, res, next) => {
   }
 };
 
-const add: RequestHandler = async (req, res, next) => {
+const add: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
-    const result = await userLikeArtworkRepository.create(req.body);
+    const user_id = (req.user as User).id;
+    const artwork_id = Number.parseInt(req.body.artwork_id);
+    if (Number.isNaN(artwork_id)) {
+      res.sendStatus(400);
+      return;
+    }
+    const result = await userLikeArtworkRepository.create({
+      user_id,
+      artwork_id,
+    });
 
     if (result != null) {
       res.status(201).json(result);
@@ -30,10 +41,10 @@ const add: RequestHandler = async (req, res, next) => {
   }
 };
 
-const destroy: RequestHandler = async (req, res, next) => {
+const destroy: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const parseId = Number.parseInt(req.params.id);
-    const userId = req.body.user_id;
+    const userId = (req.user as User).id;
     const result = await userLikeArtworkRepository.deleteById(parseId, userId);
 
     if (result.affectedRows > 0) {

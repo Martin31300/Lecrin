@@ -1,4 +1,5 @@
-import { type ReactNode, createContext, useContext, useState } from "react";
+import { type ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { User } from "../types/vite-env";
 
 interface UserContextType {
@@ -22,6 +23,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
     setUserState(newUser);
   };
+
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (input, init) => {
+      const response = await originalFetch(input, init);
+      if (response.status === 401 && new Headers(init?.headers).has("Authorization")) {
+        localStorage.removeItem("user");
+        setUserState(null);
+        toast.info("Votre session a expiré, veuillez vous reconnecter.");
+      }
+      return response;
+    };
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

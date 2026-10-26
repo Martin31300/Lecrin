@@ -1,22 +1,24 @@
 import type { RequestHandler } from "express";
+import type { AuthenticationRequest } from "./userActions";
+import type { User } from "./userRepository";
 import userFollowRepository from "./userFollowRepository";
 
-const follow: RequestHandler = async (req, res, next) => {
+const follow: RequestHandler = async (req: AuthenticationRequest, res, next) => {
     try {
         const followedId = Number.parseInt(req.params.id);
-        const { follower_id } = req.body;
-        await userFollowRepository.follow(follower_id, followedId);
+        const followerId = (req.user as User).id;
+        await userFollowRepository.follow(followerId, followedId);
         res.sendStatus(201);
     } catch (error) {
         next(error);
     }
 };
 
-const unfollow: RequestHandler = async (req, res, next) => {
+const unfollow: RequestHandler = async (req: AuthenticationRequest, res, next) => {
     try {
         const followedId = Number.parseInt(req.params.id);
-        const { follower_id } = req.body;
-        await userFollowRepository.unfollow(follower_id, followedId);
+        const followerId = (req.user as User).id;
+        await userFollowRepository.unfollow(followerId, followedId);
         res.sendStatus(204);
     } catch (error) {
         next(error);
