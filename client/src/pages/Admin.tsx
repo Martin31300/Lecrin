@@ -51,7 +51,7 @@ function Admin() {
     }, [user, navigate]);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/users`).then(r => r.json()).then(setUsers);
+        fetch(`${API_URL}/api/users`, { headers: { Authorization: `Bearer ${user?.token}` } }).then(r => r.json()).then(setUsers);
         fetch(`${API_URL}/api/artworks`).then(r => r.json()).then(setArtworks);
         fetch(`${API_URL}/api/artists`).then(r => r.json()).then(setArtists);
         fetch(`${API_URL}/api/movements`).then(r => r.json()).then(setMovements);

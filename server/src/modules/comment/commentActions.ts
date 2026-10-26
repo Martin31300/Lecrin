@@ -76,9 +76,21 @@ const add: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   }
 };
 
-const destroy: RequestHandler = async (req, res, next) => {
+const destroy: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const id = Number.parseInt(req.params.id);
+    const currentUser = req.user as User;
+
+    const comment = await commentRepository.selectOne(id);
+    if (!comment) {
+      res.sendStatus(404);
+      return;
+    }
+    if (comment.user_id !== currentUser.id && currentUser.role !== "admin") {
+      res.status(403).json("Vous n'avez pas les droits.");
+      return;
+    }
+
     const result = await commentRepository.deleteById(id);
     if (result.affectedRows > 0) {
       res.sendStatus(204);

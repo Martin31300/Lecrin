@@ -16,7 +16,7 @@ const router = express.Router();
 /* ************************************************************************* */
 // USER
 /* ************************************************************************* */
-router.get("/api/users", userActions.browse);
+router.get("/api/users", userActions.isAuth, userActions.isAdmin, userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.post("/api/users", userActions.ValidateUser, userActions.create);
 router.post("/api/users/login", userActions.login);
@@ -63,8 +63,8 @@ router.post(
   artworkActions.ValidateArtwork,
   artworkActions.add,
 );
-router.delete("/api/artworks/:id", userActions.isAuth, artworkActions.destroy);
-router.put("/api/artworks/:id", userActions.isAuth, artworkActions.edit);
+router.delete("/api/artworks/:id", userActions.isAuth, userActions.isAdmin, artworkActions.destroy);
+router.put("/api/artworks/:id", userActions.isAuth, userActions.isAdmin, artworkActions.edit);
 
 /* ************************************************************************* */
 // ARTIST
@@ -121,7 +121,7 @@ router.put(
 /* ************************************************************************* */
 router.get("/api/collections", collectionActions.browse);
 router.get("/api/collections/:id", collectionActions.read);
-router.put("/api/collections/:id", userActions.isAuth, collectionActions.edit);
+router.put("/api/collections/:id", userActions.isAuth, userActions.isAdmin, collectionActions.edit);
 router.post(
   "/api/collections",
   userActions.isAuth,
@@ -131,6 +131,7 @@ router.post(
 router.delete(
   "/api/collections/:id",
   userActions.isAuth,
+  userActions.isAdmin,
   collectionActions.destroy,
 );
 router.get("/api/users/:id/collections", collectionActions.getByUser);
@@ -143,7 +144,6 @@ router.get("/api/users/:id/saved", collectionActions.getAllSaved);
 /* ************************************************************************* */
 router.get("/api/comments", commentActions.browse);
 router.get("/api/comments/:id", commentActions.read);
-router.put("/api/comments/:id", userActions.isAuth, commentActions.edit);
 router.post(
   "/api/comments",
   userActions.isAuth,

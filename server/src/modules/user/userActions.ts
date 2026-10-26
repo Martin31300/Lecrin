@@ -29,7 +29,7 @@ const ValidateUser: RequestHandler = (req, res, next) => {
 const browse: RequestHandler = async (req, res, next) => {
   try {
     const users = await userRepository.selectAll();
-    res.json(users);
+    res.json(users.map(({ password, ...userWithoutPassword }) => userWithoutPassword));
   } catch (error) {
     next(error);
   }
@@ -40,7 +40,8 @@ const read: RequestHandler = async (req, res, next) => {
     const parseId = Number.parseInt(req.params.id);
     const user = await userRepository.selectOne(parseId);
     if (user) {
-      res.json(user);
+      const { password, mail, ...publicUser } = user;
+      res.json(publicUser);
     } else {
       res.sendStatus(404);
     }
@@ -82,6 +83,7 @@ const login: RequestHandler = async (req, res, next) => {
         const token = jwt.sign(
           { id: user.id, role: user.role },
           process.env.APP_SECRET as string,
+          { expiresIn: "7d" },
         );
         const { password, ...userWithoutPassword } = user;
         res.json({ userWithoutPassword, token });
@@ -112,11 +114,19 @@ const isAuth: RequestHandler = async (
         const user = (await userRepository.selectOne(
           payload?.id as number,
         )) as User;
+        if (!user) {
+          res.status(401).json("Utilisateur introuvable.");
+          return;
+        }
         req.user = user;
         next();
       }
     }
   } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json("Token invalide ou expiré.");
+      return;
+    }
     next(error);
   }
 };
@@ -127,19 +137,27 @@ const isAdmin: RequestHandler = async (req: AuthenticationRequest, res, next) =>
   else next();
 };
 
-const destroy: RequestHandler = async (req, res, next) => {
+const destroy: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const deleteId = Number.parseInt(req.params.id);
+    const currentUser = req.user as User;
+
+    if (currentUser.id !== deleteId && currentUser.role !== "admin") {
+      res.status(403).json("Vous n'avez pas les droits.");
+      return;
+    }
+
     const deleteUser = await userRepository.deleteById(deleteId);
     if (deleteUser.affectedRows) {
       res.sendStatus(204);
     } else {
-      res.status(404);
+      res.sendStatus(404);
     }
   } catch (err) {
     next(err);
   }
 };
+
 //faire une verif sur le le user qui supprime et le compte sur lequel il est co
 
 const edit: RequestHandler = async (req: AuthenticationRequest, res, next) => {

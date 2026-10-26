@@ -4,6 +4,8 @@ import movementRepository from "../mouvement/movementRepository";
 import artworkRepository from "./artworkRepository";
 import artistRepository from "../artist/artistRepository";
 import client from "../../../database/client";
+import type { AuthenticationRequest } from "../user/userActions";
+import type { User } from "../user/userRepository";
 
 const ValidateArtwork: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
@@ -56,7 +58,7 @@ const read: RequestHandler = async (req, res, next) => {
   }
 };
 
-const add: RequestHandler = async (req, res, next) => {
+const add: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const { artist_name, artist_photo, artist_description, artist_birthday, artist_death_date, artist_pays, artist_movement_ids, movement_ids, ...artworkData } = req.body;
 
@@ -73,7 +75,11 @@ const add: RequestHandler = async (req, res, next) => {
       await artistRepository.insertArtistMovements(artist_id, artist_movement_ids);
     }
 
-    const result = await artworkRepository.create({ ...artworkData, artist_id });
+    const result = await artworkRepository.create({
+      ...artworkData,
+      artist_id,
+      user_id: (req.user as User).id,
+    });
 
     if (result.affectedRows != null) {
       if (movement_ids && movement_ids.length > 0) {

@@ -1,6 +1,8 @@
 import type { RequestHandler } from "express";
 import Joi from "joi";
 import collectionRepository from "./collectionRepository";
+import type { AuthenticationRequest } from "../user/userActions";
+import type { User } from "../user/userRepository";
 
 const Validatecollection: RequestHandler = (req, res, next) => {
   const schema = Joi.object({
@@ -53,9 +55,9 @@ const edit: RequestHandler = async (req, res, next) => {
   }
 };
 
-const add: RequestHandler = async (req, res, next) => {
+const add: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
-    const newCollection = req.body;
+    const newCollection = { ...req.body, user_id: (req.user as User).id };
     const result = await collectionRepository.create(newCollection);
     if (result.affectedRows != null) {
       res.status(201).json(result);
@@ -101,9 +103,21 @@ const getArtworks: RequestHandler = async (req, res, next) => {
   }
 };
 
-const addArtwork: RequestHandler = async (req, res, next) => {
+const addArtwork: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const collectionId = Number.parseInt(req.params.id);
+    const currentUser = req.user as User;
+
+    const collection = await collectionRepository.selectOne(collectionId);
+    if (!collection) {
+      res.sendStatus(404);
+      return;
+    }
+    if (collection.user_id !== currentUser.id && currentUser.role !== "admin") {
+      res.status(403).json("Vous n'avez pas les droits.");
+      return;
+    }
+
     const { artwork_id } = req.body;
     await collectionRepository.addArtworkToCollection(collectionId, artwork_id);
     res.sendStatus(201);
