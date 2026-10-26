@@ -142,10 +142,41 @@ const destroy: RequestHandler = async (req, res, next) => {
 };
 //faire une verif sur le le user qui supprime et le compte sur lequel il est co
 
-const edit: RequestHandler = async (req, res, next) => {
+const edit: RequestHandler = async (req: AuthenticationRequest, res, next) => {
   try {
     const id = Number.parseInt(req.params.id);
-    const user = req.body;
+    const currentUser = req.user as User;
+
+    const isOwner = currentUser.id === id;
+    const isAdmin = currentUser.role === "admin";
+    if (!isOwner && !isAdmin) {
+      res.status(403).json("Vous n'avez pas les droits.");
+      return;
+    }
+
+    const allowedFields = ["name", "photo"];
+    if (isOwner) allowedFields.push("password");
+    if (isAdmin) allowedFields.push("mail");
+
+    const user: Record<string, string> = {};
+    for (const field of allowedFields) {
+      const value = req.body[field];
+      if (typeof value === "string" && value !== "") user[field] = value;
+    }
+
+    if (user.password) {
+      if (user.password.length < 8) {
+        res.status(400).json("Le mot de passe doit faire au moins 8 caractères.");
+        return;
+      }
+      user.password = await argon.hash(user.password);
+    }
+
+    if (Object.keys(user).length === 0) {
+      res.status(400).json("Rien à modifier.");
+      return;
+    }
+
     const result = await userRepository.updateById(user, id);
     if (result) {
       res.sendStatus(204);
